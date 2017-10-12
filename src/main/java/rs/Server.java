@@ -1,4 +1,4 @@
-package rc;
+package rs;
 
 import java.io.IOException;
 import java.net.ServerSocket;
