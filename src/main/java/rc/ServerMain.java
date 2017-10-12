@@ -9,8 +9,8 @@ public class ServerMain {
 
 	public static void main(String[] args) throws IOException {
 		logger.info("Starting Listner");
-		// Server server = new Server();
-		// server.listen();
+		Server server = new Server();
+		server.listen();
 
 	}
 

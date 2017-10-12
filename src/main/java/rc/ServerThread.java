@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class ServerThread implements Runnable {
+import org.apache.log4j.Logger;
 
+public class ServerThread implements Runnable {
+	
+	final static Logger logger = Logger.getLogger(ServerThread.class);
 	private Socket connectionSocket;
 
 	public ServerThread(Socket connectionSocket) {
@@ -16,6 +19,7 @@ public class ServerThread implements Runnable {
 	}
 
 	public void run() {
+		logger.info("New Server Thread Created");
 		BufferedReader inFromClient;
 		try {
 			inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
