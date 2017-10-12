@@ -1,13 +1,19 @@
 package util;
 
-import java.net.InetAddress;
+import java.util.Date;
 
 public class Peer {
 	int cookie;
-	InetAddress address;
+	String hostname;
 	int portNumber;
-	//Active-Inactive Flag
+	// Active-Inactive Flag
 	Boolean status;
 	int TTL;
-	
+	Date lastRegistrationTime;
+
+	public Peer() {
+		super();
+	}
+	// TODO Override Equals Method
+
 }

@@ -9,7 +9,7 @@ import java.net.Socket;
 import org.apache.log4j.Logger;
 
 public class ServerThread implements Runnable {
-	
+
 	final static Logger logger = Logger.getLogger(ServerThread.class);
 	private Socket connectionSocket;
 
