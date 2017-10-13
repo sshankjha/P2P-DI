@@ -8,12 +8,12 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-public class ServerThread implements Runnable {
+public class RSServerThread implements Runnable {
 
-	final static Logger logger = Logger.getLogger(ServerThread.class);
+	final static Logger logger = Logger.getLogger(RSServerThread.class);
 	private Socket connectionSocket;
 
-	public ServerThread(Socket connectionSocket) {
+	public RSServerThread(Socket connectionSocket) {
 		super();
 		this.connectionSocket = connectionSocket;
 	}
@@ -26,8 +26,8 @@ public class ServerThread implements Runnable {
 			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 			String clientSentence = inFromClient.readLine();
 			System.out.println("Received: " + clientSentence);
-			String capitalizedSentence = clientSentence.toUpperCase() + '\n';
-			outToClient.writeBytes(capitalizedSentence);
+			// String capitalizedSentence = clientSentence.toUpperCase() + '\n';
+			// outToClient.writeBytes(capitalizedSentence);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

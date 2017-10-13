@@ -6,19 +6,19 @@ import java.net.Socket;
 
 import util.GlobalConstants;
 
-public class Server {
+public class RSServer {
 
 	private ServerSocket welcomeSocket;
 
-	public Server() throws IOException {
+	public RSServer() throws IOException {
 		super();
-		welcomeSocket = new ServerSocket(GlobalConstants.RC_PORT);
+		welcomeSocket = new ServerSocket(GlobalConstants.RS_PORT);
 	}
 
 	public void listen() throws IOException {
 		while (true) {
 			Socket connectionSocket = welcomeSocket.accept();
-			Thread t = new Thread(new ServerThread(connectionSocket));
+			Thread t = new Thread(new RSServerThread(connectionSocket));
 			t.start();
 		}
 	}
