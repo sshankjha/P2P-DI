@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 
@@ -38,7 +37,7 @@ public class P2PUtil {
 			cookie = Integer.parseInt(sCurrentLine);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return cookie;
 	}
@@ -50,9 +49,9 @@ public class P2PUtil {
 
 			bw.write(String.valueOf(cookie));
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 
-			e.printStackTrace();
+			logger.error(e);
 
 		}
 	}

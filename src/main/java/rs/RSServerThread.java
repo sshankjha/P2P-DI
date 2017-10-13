@@ -8,6 +8,8 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
+import util.GlobalConstants;
+
 public class RSServerThread implements Runnable {
 
 	final static Logger logger = Logger.getLogger(RSServerThread.class);
@@ -34,6 +36,9 @@ public class RSServerThread implements Runnable {
 	private void processRequest() throws IOException {
 		String clientSentence = fromPeer.readLine();
 		System.out.println("Received: " + clientSentence);
+		String sentence = "P2P-DI/1.0 200\r\n";
+		sentence += GlobalConstants.HEADER_COOKIE + " " + 10 + "\r\n";
+		toPeer.writeBytes(sentence);
 	}
 
 	public void processLeave() {
@@ -44,6 +49,15 @@ public class RSServerThread implements Runnable {
 	}
 
 	public void processKeepAlive() {
+	}
+
+	// Close connection during garbage collection
+	public void finalize() {
+		try {
+			connectionSocket.close();
+		} catch (IOException e) {
+			logger.error(e);
+		}
 	}
 
 }

@@ -19,7 +19,7 @@ public class RSClient {
 
 	public RSClient() throws UnknownHostException, IOException {
 		// Read cookie from a file else set to a default value of 0
-		cookie = 1;
+		cookie = 0;
 
 	}
 
@@ -30,8 +30,12 @@ public class RSClient {
 		String sentence;
 		sentence = "Register P2P-DI/1.0\r\n";
 		// sentence += "Length: " + "1024\r\n";
-		sentence += "Cookie: " + cookie + "\r\n";
+		sentence += GlobalConstants.HEADER_COOKIE + " " + cookie + "\r\n";
 		toServer.writeBytes(sentence);
+		String clientSentence = fromServer.readLine();
+		System.out.println("Received: " + clientSentence);
+		clientSentence = fromServer.readLine();
+		System.out.println("Received: " + clientSentence);
 		// TODO Extract cookie from server
 		socket.close();
 	}
