@@ -12,26 +12,38 @@ public class RSServerThread implements Runnable {
 
 	final static Logger logger = Logger.getLogger(RSServerThread.class);
 	private Socket connectionSocket;
+	private BufferedReader fromPeer;
+	DataOutputStream toPeer;
 
-	public RSServerThread(Socket connectionSocket) {
+	public RSServerThread(Socket newConnectionSocket) throws IOException {
 		super();
-		this.connectionSocket = connectionSocket;
+		this.connectionSocket = newConnectionSocket;
+		fromPeer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+		toPeer = new DataOutputStream(connectionSocket.getOutputStream());
 	}
 
 	public void run() {
-		logger.info("New Server Thread Created");
-		BufferedReader inFromClient;
+		logger.info("New Server Thread Started");
 		try {
-			inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-			String clientSentence = inFromClient.readLine();
-			System.out.println("Received: " + clientSentence);
-			// String capitalizedSentence = clientSentence.toUpperCase() + '\n';
-			// outToClient.writeBytes(capitalizedSentence);
+			processRequest();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
 
+	private void processRequest() throws IOException {
+		String clientSentence = fromPeer.readLine();
+		System.out.println("Received: " + clientSentence);
+	}
+
+	public void processLeave() {
+
+	}
+
+	public void processLeavepQuery() {
+	}
+
+	public void processKeepAlive() {
 	}
 
 }

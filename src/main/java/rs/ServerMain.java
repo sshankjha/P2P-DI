@@ -9,9 +9,7 @@ public class ServerMain {
 
 	public static void main(String[] args) throws IOException {
 		logger.info("Starting Listner");
-		RSServer server = new RSServer();
-		server.listen();
-
+		RSServer.getInstance().listen();
 	}
 
 }
