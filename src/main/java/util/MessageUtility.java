@@ -17,18 +17,18 @@ public class MessageUtility {
 			throws IOException {
 		String method = requestStream.readLine();
 		String[] values = method.split(" ");
-		request.method = values[0];
-		request.protocol = values[1].split("/")[0];
-		request.version = values[1].split("/")[1];
+		request.setMethod(values[0]);
+		request.setProtocol(values[1].split("/")[0]);
+		request.setVersion(values[1].split("/")[1]);
 	}
 
 	private static void setResponseStatusAndVersion(BufferedReader responseStream, ResponseMessage response)
 			throws IOException {
 		String method = responseStream.readLine();
 		String[] values = method.split(" ");
-		response.protocol = values[0].split("/")[0];
-		response.version = values[0].split("/")[1];
-		response.status = values[1];
+		response.setProtocol(values[0].split("/")[0]);
+		response.setVersion(values[0].split("/")[1]);
+		response.setStatus(values[1]);
 	}
 
 	private static HashMap<String, String> extractHeaders(BufferedReader request) throws IOException {
@@ -54,8 +54,8 @@ public class MessageUtility {
 		RequestMessage request = new RequestMessage();
 		try {
 			setRequestMethodAndVersion(requestStream, request);
-			request.headers = extractHeaders(requestStream);
-			request.data = extractData(requestStream);
+			request.setHeaders(extractHeaders(requestStream));
+			request.setData(extractData(requestStream));
 		} catch (Exception e) {
 			logger.error("Error parsing request");
 			logger.error(e);
@@ -68,8 +68,8 @@ public class MessageUtility {
 		ResponseMessage response = new ResponseMessage();
 		try {
 			setResponseStatusAndVersion(responseStream, response);
-			response.headers = extractHeaders(responseStream);
-			response.data = extractData(responseStream);
+			response.setHeaders(extractHeaders(responseStream));
+			response.setData(extractData(responseStream));
 		} catch (Exception e) {
 			logger.error("Error parsing request");
 			logger.error(e);

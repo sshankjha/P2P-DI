@@ -41,8 +41,16 @@ public class RSServerThread implements Runnable {
 	private void processRequest() throws IOException {
 		RequestMessage message = MessageUtility.extractRequest(fromPeer);
 		logger.info(message);
-		int requestCookie = Integer.parseInt(message.getHeader(Constants.COOKIE));
+		if (Constants.METHOD_REGISTER.equals(message.getMethod())) {
+			processRegister(message);
+		}
+
+	}
+
+	public void processRegister(RequestMessage message) throws IOException {
+		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
 		// TODO Validate against peers - for now assume cookie is correct
+		// TODO Check for invalid request/negative cookie number
 		String sentence = "";
 		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
 		if (requestCookie > 0) {
@@ -56,18 +64,20 @@ public class RSServerThread implements Runnable {
 			// TODO Set port number of RFC SERVER from request
 			peer.setPortNumber(0);
 			peer.setHostname(connectionSocket.getInetAddress().toString());
+			RSServer.getInstance().addPeer(peer);
 			sentence += Constants.HEADER_COOKIE + " " + cookieNum + Constants.CR_LF;
 		}
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
+
 	}
 
 	public void processLeave() {
 
 	}
 
-	public void processLeavepQuery() {
+	public void processPQuery() {
 	}
 
 	public void processKeepAlive() {

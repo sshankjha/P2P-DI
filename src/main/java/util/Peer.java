@@ -6,7 +6,8 @@ import java.util.Objects;
 public class Peer {
 	private int cookie;
 	private String hostname;
-	private int portNumber;// RFC Server
+	// RFC Server
+	private int portNumber;
 	// Active-Inactive Flag
 	private Boolean status;
 	private int TTL = 7200;
@@ -68,14 +69,18 @@ public class Peer {
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		return Objects.hash(hostname, cookie, portNumber);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
+	public boolean equals(Object otherObject) {
+		if (otherObject == this)
+			return true;
+		if (!(otherObject instanceof Peer)) {
+			return false;
+		}
+		Peer peer = (Peer) otherObject;
+		return cookie == peer.cookie && Objects.equals(hostname, peer.hostname);
 	}
 
 }
