@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.GlobalConstants;
+import util.Constants;
 import util.Peer;
 
 public class RSServer {
@@ -26,7 +26,7 @@ public class RSServer {
 	private RSServer() throws IOException {
 		super();
 		peerList = new ArrayList<Peer>();
-		welcomeSocket = new ServerSocket(GlobalConstants.RS_PORT);
+		welcomeSocket = new ServerSocket(Constants.RS_PORT);
 	}
 
 	public void listen() throws IOException {

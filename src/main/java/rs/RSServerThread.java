@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import javax.xml.ws.handler.MessageContext;
+
 import org.apache.log4j.Logger;
 
-import util.GlobalConstants;
+import util.Constants;
+import util.MessageUtility;
+import util.RequestMessage;
 
 public class RSServerThread implements Runnable {
 
@@ -34,10 +38,14 @@ public class RSServerThread implements Runnable {
 	}
 
 	private void processRequest() throws IOException {
-		String clientSentence = fromPeer.readLine();
-		System.out.println("Received: " + clientSentence);
+		// String clientSentence = fromPeer.readLine();
+		// System.out.println("Received: " + clientSentence);
+		RequestMessage message = MessageUtility.extractRequest(fromPeer);
+		System.out.println(message);
 		String sentence = "P2P-DI/1.0 200\r\n";
-		sentence += GlobalConstants.HEADER_COOKIE + " " + 10 + "\r\n";
+		sentence += Constants.HEADER_COOKIE + " " + 10 + "\r\n";
+		sentence += "\r\n";
+		sentence += "\r\n";
 		toPeer.writeBytes(sentence);
 	}
 

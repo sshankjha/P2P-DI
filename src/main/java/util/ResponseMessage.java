@@ -2,13 +2,13 @@ package util;
 
 import java.util.Map.Entry;
 
-public class RequestMessage extends Message {
-	String method;
+public class ResponseMessage extends Message {
+	String status;
 
 	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		result.append(method + " " + protocol + "/" + version + "\r\n");
+		result.append(status + " " + protocol + "/" + version + "\r\n");
 		for (Entry<String, String> entry : headers.entrySet()) {
 			result.append(entry.getKey() + ": " + entry.getValue() + "\r\n");
 		}

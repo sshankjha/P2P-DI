@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 
-import util.GlobalConstants;
+import util.Constants;
 import util.P2PUtil;
 
 public class RSClient {
@@ -19,18 +19,20 @@ public class RSClient {
 
 	public RSClient() throws UnknownHostException, IOException {
 		// Read cookie from a file else set to a default value of 0
-		cookie = 0;
+		cookie = P2PUtil.getCookieFromFile();
 
 	}
 
 	public void register() throws IOException {
-		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), GlobalConstants.RS_PORT);
+		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
 		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;
-		sentence = "Register P2P-DI/1.0\r\n";
+		sentence = Constants.METHOD_REGISTER + Constants.PROTOCOL_VERSION + Constants.CR_LF;
 		// sentence += "Length: " + "1024\r\n";
-		sentence += GlobalConstants.HEADER_COOKIE + " " + cookie + "\r\n";
+		sentence += Constants.HEADER_COOKIE + " " + cookie + "\r\n";
+		sentence += "\r\n";
+		sentence += "\r\n";
 		toServer.writeBytes(sentence);
 		String clientSentence = fromServer.readLine();
 		System.out.println("Received: " + clientSentence);
