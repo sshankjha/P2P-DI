@@ -14,6 +14,7 @@ public class RSServer {
 	private List<Peer> peerList;
 	private ServerSocket welcomeSocket;
 	private static RSServer instance = null;
+	private static int currentCookie = 0;
 
 	// Singleton Class
 	public static synchronized RSServer getInstance() throws IOException {
@@ -37,7 +38,13 @@ public class RSServer {
 		}
 	}
 
+	public synchronized int getNextCookieNumber() {
+		currentCookie++;
+		return currentCookie;
+	}
+
 	public synchronized void addPeer(Peer newPeer) {
+		peerList.add(newPeer);
 	}
 
 	public synchronized Peer removePeer(Peer newPeer) {

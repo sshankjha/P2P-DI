@@ -43,7 +43,7 @@ public class MessageUtility {
 
 	private static String extractData(BufferedReader request) throws IOException {
 		String currentLine;
-		StringBuffer data = new StringBuffer();
+		StringBuffer data = new StringBuffer("");
 		while ((currentLine = request.readLine()) != null && !currentLine.isEmpty()) {
 			data.append(currentLine);
 		}

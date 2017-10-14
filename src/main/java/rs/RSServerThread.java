@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import util.Constants;
 import util.MessageUtility;
+import util.Peer;
 import util.RequestMessage;
 
 public class RSServerThread implements Runnable {
@@ -38,14 +39,27 @@ public class RSServerThread implements Runnable {
 	}
 
 	private void processRequest() throws IOException {
-		// String clientSentence = fromPeer.readLine();
-		// System.out.println("Received: " + clientSentence);
 		RequestMessage message = MessageUtility.extractRequest(fromPeer);
-		System.out.println(message);
-		String sentence = "P2P-DI/1.0 200\r\n";
-		sentence += Constants.HEADER_COOKIE + " " + 10 + "\r\n";
-		sentence += "\r\n";
-		sentence += "\r\n";
+		logger.info(message);
+		int requestCookie = Integer.parseInt(message.getHeader(Constants.COOKIE));
+		// TODO Validate against peers - for now assume cookie is correct
+		String sentence = "";
+		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
+		if (requestCookie > 0) {
+			// TODO Might need to update port and all
+			sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
+		} else {
+			// TODO Add to peer list
+			int cookieNum = RSServer.getInstance().getNextCookieNumber();
+			Peer peer = new Peer();
+			peer.setCookie(cookieNum);
+			// TODO Set port number of RFC SERVER from request
+			peer.setPortNumber(0);
+			peer.setHostname(connectionSocket.getInetAddress().toString());
+			sentence += Constants.HEADER_COOKIE + " " + cookieNum + Constants.CR_LF;
+		}
+		sentence += Constants.CR_LF;
+		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 	}
 
@@ -57,6 +71,7 @@ public class RSServerThread implements Runnable {
 	}
 
 	public void processKeepAlive() {
+		// TODO RESET TTL
 	}
 
 	// Close connection during garbage collection

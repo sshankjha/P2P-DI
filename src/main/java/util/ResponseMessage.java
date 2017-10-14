@@ -8,7 +8,7 @@ public class ResponseMessage extends Message {
 	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		result.append(status + " " + protocol + "/" + version + "\r\n");
+		result.append(protocol + "/" + version + " " + status + "\r\n");
 		for (Entry<String, String> entry : headers.entrySet()) {
 			result.append(entry.getKey() + ": " + entry.getValue() + "\r\n");
 		}

@@ -9,4 +9,12 @@ public class Message {
 	Map<String, String> headers = new HashMap<String, String>();
 	String hostname;
 	String data = "";
+
+	public String getHeader(String key) {
+		String value = null;
+		if (headers.containsKey(key)) {
+			value = headers.get(key);
+		}
+		return value;
+	}
 }

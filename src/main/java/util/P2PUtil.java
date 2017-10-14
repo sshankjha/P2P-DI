@@ -21,7 +21,7 @@ public class P2PUtil {
 	}
 
 	public static String getCookieFileName() throws UnknownHostException {
-		return Constants.COOKIE + "_" + getLocalIpAddress();
+		return Constants.COOKIE + "_" + RSClient.hostname;
 	}
 
 	// Code taken from :
