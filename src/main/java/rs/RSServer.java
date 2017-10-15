@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import util.Constants;
@@ -45,7 +46,22 @@ public class RSServer {
 		return currentCookie;
 	}
 
-	public void addPeer(Peer newPeer) {
+	public void addUpdatePeer(Peer newPeer) {
+		synchronized (peerList) {
+			boolean flag = true;
+			for (Peer peer : peerList) {
+				if (peer.equals(newPeer)) {
+					peer.setTTL(7200);
+					peer.setPortNumber(newPeer.getPortNumber());
+					peer.setLastRegistrationTime(new Date());
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				peerList.add(newPeer);
+			}
+		}
 		peerList.add(newPeer);
 	}
 

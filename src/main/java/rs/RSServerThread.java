@@ -47,43 +47,35 @@ public class RSServerThread implements Runnable {
 
 	}
 
-	public void processRegister(RequestMessage message) throws IOException {
+	private void processRegister(RequestMessage message) throws IOException {
 		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
 		// TODO Validate against peers - for now assume cookie is correct
 		// TODO Check for invalid request/negative cookie number
 		String sentence = "";
 		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
+		int cookieNum;
+		// Assign a new cookie number if request cookie = 0
 		if (requestCookie > 0) {
-			// TODO Might need to update port and all
-			sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
+			cookieNum = requestCookie;
 		} else {
-			// TODO Add to peer list
-			int cookieNum = RSServer.getInstance().getNextCookieNumber();
-			Peer peer = new Peer();
-			peer.setCookie(cookieNum);
-			// TODO Set port number of RFC SERVER from request
-			peer.setPortNumber(0);
-			peer.setHostname(connectionSocket.getInetAddress().toString());
-			// Adding peer in the peer list
-			RSServer.getInstance().addPeer(peer);
-			sentence += Constants.HEADER_COOKIE + " " + cookieNum + Constants.CR_LF;
+			cookieNum = RSServer.getInstance().getNextCookieNumber();
 		}
+
+		Peer peer = new Peer();
+		peer.setCookie(cookieNum);
+		// TODO Set port number of RFC SERVER from request
+		peer.setPortNumber(0);
+		peer.setHostname(connectionSocket.getInetAddress().toString());
+		RSServer.getInstance().addUpdatePeer(peer);
+		sentence += Constants.HEADER_COOKIE + " " + cookieNum + Constants.CR_LF;
+
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 
 	}
 
-	public void processLeave() throws IOException {
-		synchronized (RSServer.getInstance().getPeerList()) {
-			for (Peer p : RSServer.getInstance().getPeerList()) {
-
-			}
-		}
-
-	}
-
-	public void processPQuery(RequestMessage message) throws IOException {
+	private void processPQuery(RequestMessage message) throws IOException {
 		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
 		// TODO Validate against peers - for now assume cookie is correct
 		// TODO Check for invalid request/negative cookie number
@@ -99,15 +91,13 @@ public class RSServerThread implements Runnable {
 
 	}
 
-	private void sendPeerList() throws IOException {
+	private void processLeave() throws IOException {
 		synchronized (RSServer.getInstance().getPeerList()) {
-			for (Peer peer : RSServer.getInstance().getPeerList()) {
-				if (peer.isActive())
-					toPeer.writeBytes(peer.getHostname() + Constants.SEPARATOR + peer.getPortNumber()
-							+ Constants.SEPARATOR + peer.getCookie());
-			}
+			for (Peer p : RSServer.getInstance().getPeerList()) {
 
+			}
 		}
+
 	}
 
 	public void processKeepAlive() {
@@ -120,6 +110,17 @@ public class RSServerThread implements Runnable {
 			connectionSocket.close();
 		} catch (IOException e) {
 			logger.error(e);
+		}
+	}
+
+	private void sendPeerList() throws IOException {
+		synchronized (RSServer.getInstance().getPeerList()) {
+			for (Peer peer : RSServer.getInstance().getPeerList()) {
+				if (peer.isActive())
+					toPeer.writeBytes(peer.getHostname() + Constants.SEPARATOR + peer.getPortNumber()
+							+ Constants.SEPARATOR + peer.getCookie());
+			}
+
 		}
 	}
 

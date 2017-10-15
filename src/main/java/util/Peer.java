@@ -77,7 +77,7 @@ public class Peer implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(hostname, cookie, portNumber);
+		return Objects.hash(hostname, cookie);
 	}
 
 	@Override
