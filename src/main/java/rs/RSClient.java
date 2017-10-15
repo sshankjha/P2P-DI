@@ -81,7 +81,23 @@ public class RSClient {
 		}
 	}
 
-	public void keepAlive() {
+	public void keepAlive() throws UnknownHostException, IOException {
+		Socket socket = new Socket(hostname, Constants.RS_PORT);
+		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		String sentence;
+		sentence = Constants.METHOD_PQUERY + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
+		sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		toServer.writeBytes(sentence);
+		ResponseMessage response = MessageUtility.extractResponse(fromServer);
+		updatePeerList(response);
+		// List<Peer> peerlist = P2PUtil.deserialzePeerList(response.getData());
+		cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
+		setCookie();
+		logger.info(response);
+		socket.close();
 	}
 
 	private void setCookie() throws UnknownHostException {

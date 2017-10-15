@@ -11,6 +11,7 @@ public final class Constants {
 	public static final int STATUS_ERROR = 400;
 	public static final String METHOD_REGISTER = "Register";
 	public static final String METHOD_PQUERY = "PQuery";
+	public static final String METHOD_KEEPALIVE = "KeepAlive";
 	public static final String SEPARATOR = "_";
 
 }
