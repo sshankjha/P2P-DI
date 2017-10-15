@@ -39,18 +39,25 @@ public class RSServerThread implements Runnable {
 	private void processRequest() throws IOException {
 		RequestMessage message = MessageUtility.extractRequest(fromPeer);
 		logger.info(message);
+		// TODO Validate against peers - for now assume cookie is correct
+		// TODO Check for invalid request/negative cookie number
 		if (Constants.METHOD_REGISTER.equals(message.getMethod())) {
 			processRegister(message);
 		} else if (Constants.METHOD_PQUERY.equals(message.getMethod())) {
 			processPQuery(message);
+		} else if (Constants.METHOD_KEEPALIVE.equals(message.getMethod())) {
+			processKeepAlive(message);
+		} else if (Constants.METHOD_LEAVE.equals(message.getMethod())) {
+			processLeave(message);
+		} else {
+			// TODO: Send invalid request message
+			return;
 		}
 
 	}
 
 	private void processRegister(RequestMessage message) throws IOException {
 		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
-		// TODO Validate against peers - for now assume cookie is correct
-		// TODO Check for invalid request/negative cookie number
 		String sentence = "";
 		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
 		int cookieNum;
@@ -72,13 +79,12 @@ public class RSServerThread implements Runnable {
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
+		toPeer.close();
 
 	}
 
 	private void processPQuery(RequestMessage message) throws IOException {
 		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
-		// TODO Validate against peers - for now assume cookie is correct
-		// TODO Check for invalid request/negative cookie number
 		String sentence = "";
 		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
 		sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
@@ -91,20 +97,43 @@ public class RSServerThread implements Runnable {
 
 	}
 
-	private void processLeave() throws IOException {
-		synchronized (RSServer.getInstance().getPeerList()) {
-			for (Peer p : RSServer.getInstance().getPeerList()) {
-
-			}
-		}
-
+	private void processLeave(RequestMessage message) throws IOException {
+		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
+		String sentence = "";
+		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
+		// Assign a new cookie number if request cookie = 0
+		Peer peer = new Peer();
+		peer.setCookie(requestCookie);
+		peer.setHostname(connectionSocket.getInetAddress().toString());
+		RSServer.getInstance().removePeer(peer);
+		sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		toPeer.writeBytes(sentence);
+		toPeer.close();
 	}
 
-	public void processKeepAlive() {
-		// TODO RESET TTL
+	public void processKeepAlive(RequestMessage message) throws IOException {
+		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
+		String sentence = "";
+		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
+		// Assign a new cookie number if request cookie = 0
+		Peer peer = new Peer();
+		peer.setCookie(requestCookie);
+		// TODO Set port number of RFC SERVER from request
+		peer.setPortNumber(0);
+		peer.setHostname(connectionSocket.getInetAddress().toString());
+		RSServer.getInstance().updatePeer(peer);
+		sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		toPeer.writeBytes(sentence);
+		toPeer.close();
 	}
 
-	// Close connection during garbage collection
+	/**
+	 * Close connection during garbage collection
+	 **/
 	public void finalize() {
 		try {
 			connectionSocket.close();

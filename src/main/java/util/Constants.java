@@ -12,6 +12,7 @@ public final class Constants {
 	public static final String METHOD_REGISTER = "Register";
 	public static final String METHOD_PQUERY = "PQuery";
 	public static final String METHOD_KEEPALIVE = "KeepAlive";
+	public static final String METHOD_LEAVE = "Leave";
 	public static final String SEPARATOR = "_";
 
 }

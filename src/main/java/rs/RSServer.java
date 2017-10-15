@@ -65,8 +65,19 @@ public class RSServer {
 		peerList.add(newPeer);
 	}
 
-	public Peer removePeer(Peer newPeer) {
-		return newPeer;
+	public void updatePeer(Peer newPeer) {
+		synchronized (peerList) {
+			for (Peer peer : peerList) {
+				if (peer.equals(newPeer)) {
+					peer.setTTL(7200);
+					break;
+				}
+			}
+		}
+	}
+
+	public void removePeer(Peer newPeer) {
+		peerList.remove(newPeer);
 	}
 
 	public List<Peer> getPeerList() {
