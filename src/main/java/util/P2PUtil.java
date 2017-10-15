@@ -24,8 +24,10 @@ public class P2PUtil {
 		return Constants.COOKIE + "_" + RSClient.hostname;
 	}
 
-	// Code taken from :
-	// https://www.mkyong.com/java/how-to-read-file-from-java-bufferedreader-example/
+	/**
+	 * Code referenced from :
+	 * https://www.mkyong.com/java/how-to-read-file-from-java-bufferedreader-example/
+	 **/
 	public static int getCookieFromFile() throws UnknownHostException {
 		int cookie = 0;
 		String cookieFileName = getCookieFileName();
@@ -55,5 +57,30 @@ public class P2PUtil {
 
 		}
 	}
+
+	/*
+	 * public static byte[] serialize(Object obj) throws IOException {
+	 * ByteArrayOutputStream out = new ByteArrayOutputStream();
+	 * ObjectOutputStream os = new ObjectOutputStream(out); os.writeObject(obj);
+	 * return out.toByteArray(); }
+	 * 
+	 * public static void serializePeerList(List<Peer> list, DataOutputStream
+	 * toServer) throws IOException {
+	 * 
+	 * byte[] data = serialize("Hello Mother!!"); toServer.write(data); }
+	 * 
+	 * public static Object deserialize(byte[] data) throws IOException,
+	 * ClassNotFoundException { ByteArrayInputStream in = new
+	 * ByteArrayInputStream(data); ObjectInputStream is = new
+	 * ObjectInputStream(in); return is.readObject(); }
+	 * 
+	 * public static List<Peer> deserialzePeerList(String data) throws
+	 * IOException, ClassNotFoundException {
+	 * 
+	 * List<Peer> peerList = null; Object obj = deserialize(data.getBytes());
+	 * return peerList;
+	 * 
+	 * }
+	 */
 
 }

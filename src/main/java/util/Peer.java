@@ -1,22 +1,30 @@
 package util;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Peer {
+public class Peer implements Serializable {
+	private static final long serialVersionUID = 8453748351877719448L;
+
 	private int cookie;
 	private String hostname;
 	// RFC Server
 	private int portNumber;
 	// Active-Inactive Flag
-	private Boolean status;
+	private Boolean status = true;
 	private int TTL = 7200;
-	private Date lastRegistrationTime;
+	private Date lastRegistrationTime = new Date();
 
 	public Peer() {
 		super();
-		status = true;
-		lastRegistrationTime = new Date();
+	}
+
+	public Peer(String hostname, int portNumber, int cookie) {
+		super();
+		this.hostname = hostname;
+		this.portNumber = portNumber;
+		this.cookie = cookie;
 	}
 
 	public int getCookie() {
@@ -43,7 +51,7 @@ public class Peer {
 		this.portNumber = portNumber;
 	}
 
-	public Boolean getStatus() {
+	public Boolean isActive() {
 		return status;
 	}
 

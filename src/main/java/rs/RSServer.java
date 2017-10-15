@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import util.Constants;
@@ -26,7 +28,7 @@ public class RSServer {
 
 	private RSServer() throws IOException {
 		super();
-		peerList = new ArrayList<Peer>();
+		peerList = Collections.synchronizedList(new ArrayList<Peer>());
 		welcomeSocket = new ServerSocket(Constants.RS_PORT);
 	}
 
@@ -43,15 +45,15 @@ public class RSServer {
 		return currentCookie;
 	}
 
-	public synchronized void addPeer(Peer newPeer) {
+	public void addPeer(Peer newPeer) {
 		peerList.add(newPeer);
 	}
 
-	public synchronized Peer removePeer(Peer newPeer) {
+	public Peer removePeer(Peer newPeer) {
 		return newPeer;
 	}
 
-	public synchronized List<Peer> getPeerList() {
+	public List<Peer> getPeerList() {
 		return peerList;
 	}
 
