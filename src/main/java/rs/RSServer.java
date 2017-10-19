@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import util.Constants;
 import util.Peer;
 
 public class RSServer {
-
+	final static Logger logger = Logger.getLogger(RSServer.class);
 	private List<Peer> peerList;
 	private ServerSocket welcomeSocket;
 	private static RSServer instance = null;

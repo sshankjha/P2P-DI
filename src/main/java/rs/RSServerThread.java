@@ -75,7 +75,6 @@ public class RSServerThread implements Runnable {
 		peer.setHostname(connectionSocket.getInetAddress().toString());
 		RSServer.getInstance().addUpdatePeer(peer);
 		sentence += Constants.HEADER_COOKIE + " " + cookieNum + Constants.CR_LF;
-
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
