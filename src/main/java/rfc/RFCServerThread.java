@@ -8,7 +8,11 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
+import rs.RSServer;
+import rs.RSServerThread;
+import util.Constants;
 import util.MessageUtility;
+import util.RFC;
 import util.RequestMessage;
 
 public class RFCServerThread implements Runnable {
@@ -36,13 +40,24 @@ public class RFCServerThread implements Runnable {
 
 	private void processRequest() throws IOException {
 		RequestMessage message = MessageUtility.extractRequest(fromPeer);
-
+		if (message.getMethod().equals(Constants.METHOD_RFCQUERY)) {
+			processRFCQuery();
+		} else if (message.getMethod().equals(Constants.METHOD_GETRFC)) {
+			processGetRfc();
+		} else {
+			logger.info("Error processing request");
+		}
 	}
 
-	public void processRFCQuery() {
+	public void processRFCQuery() throws IOException {
+		for (RFC rfc : RFCServer.getInstance().getCombinedRFCList()) {
+			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR + rfc.getTitle() + Constants.SEPARATOR
+					+ rfc.getHost() + Constants.SEPARATOR);
+		}
 	}
 
-	public void processGetRfc() {
+	public void processGetRfc(String fileName) {
+		
 	}
 
 	/**

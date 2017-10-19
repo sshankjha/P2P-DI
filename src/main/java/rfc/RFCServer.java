@@ -3,6 +3,8 @@ package rfc;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import rs.RSServerThread;
 import util.RFC;
@@ -35,14 +37,23 @@ public class RFCServer {
 		}
 	}
 
-	public void addOwnRFC(int rfcNumber, String title) {
-		RFC newrfc = new RFC(rfcNumber, title);
+	public void addOwnRFC(int rfcNumber, String title, String host) {
+		RFC newrfc = new RFC(rfcNumber, title, host);
 		rfcIndex.getOwnRFCList().add(newrfc);
+	}
 
+	public void addPeerRFC(List<RFC> peerRFC) {
+		// filter for duplicate entries
+		rfcIndex.getPeerRFCList().addAll(peerRFC);
+	}
+
+	public List<RFC> getCombinedRFCList() {
+		List<RFC> listToReturn = new ArrayList<>(rfcIndex.getOwnRFCList());
+		listToReturn.addAll(rfcIndex.getPeerRFCList());
+		return listToReturn;
 	}
 
 	public int getListneningSocket() {
 		return welcomeSocket.getLocalPort();
 	}
-
 }
