@@ -36,7 +36,13 @@ public class RFCServerThread implements Runnable {
 
 	private void processRequest() throws IOException {
 		RequestMessage message = MessageUtility.extractRequest(fromPeer);
+		
+	}
 
+	public void processRFCQuery() {
+	}
+
+	public void processGetRfc() {
 	}
 
 	/**

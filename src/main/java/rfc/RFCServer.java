@@ -5,11 +5,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import rs.RSServerThread;
+import util.RFCIndex;
 
 public class RFCServer {
 
 	private ServerSocket welcomeSocket;
 	private static RFCServer instance = null;
+	private static RFCIndex rfcIndex = new RFCIndex();
 
 	// Singleton Class
 	public static synchronized RFCServer getInstance() throws IOException {
