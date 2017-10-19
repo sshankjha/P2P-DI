@@ -49,7 +49,8 @@ public class RFCClient {
 		DataOutputStream toPeer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromPeer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;
-		sentence = Constants.METHOD_GETRFC + " " + Constants.PROTOCOL_VERSION + " " + fileName + " " + Constants.CR_LF;
+		sentence = Constants.METHOD_GETRFC + " " + Constants.PROTOCOL_VERSION + " " + Constants.CR_LF;
+		sentence = Constants.FILENAME + " " + fileName + " " + Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 		ResponseMessage response = MessageUtility.extractResponse(fromPeer);

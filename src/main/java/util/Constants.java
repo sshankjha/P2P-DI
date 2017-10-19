@@ -17,6 +17,7 @@ public final class Constants {
 	public static final String METHOD_LEAVE = "Leave";
 	public static final String METHOD_RFCQUERY = "RFCQuery";
 	public static final String METHOD_GETRFC = "GetRFC";
+	public static final String FILENAME = "FileName";
 	public static final String SEPARATOR = "_";
 	public static final String RESOURCE_PATH = "main" + File.separator + "resources" + File.separator;
 	public static final String RFC_PATH = "src" + File.separator + "main" + File.separator + "resources"

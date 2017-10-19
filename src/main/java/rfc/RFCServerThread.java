@@ -43,7 +43,7 @@ public class RFCServerThread implements Runnable {
 		if (message.getMethod().equals(Constants.METHOD_RFCQUERY)) {
 			processRFCQuery();
 		} else if (message.getMethod().equals(Constants.METHOD_GETRFC)) {
-			processGetRfc();
+			processGetRfc(message.getHeaders().get(Constants.FILENAME));
 		} else {
 			logger.info("Error processing request");
 		}
