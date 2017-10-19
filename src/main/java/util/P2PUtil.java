@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.net.Inet4Address;
 import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;

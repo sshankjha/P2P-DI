@@ -12,6 +12,7 @@ import rs.RSServer;
 import rs.RSServerThread;
 import util.Constants;
 import util.MessageUtility;
+import util.P2PUtil;
 import util.RFC;
 import util.RequestMessage;
 
@@ -43,20 +44,35 @@ public class RFCServerThread implements Runnable {
 		if (message.getMethod().equals(Constants.METHOD_RFCQUERY)) {
 			processRFCQuery();
 		} else if (message.getMethod().equals(Constants.METHOD_GETRFC)) {
-			processGetRfc(message.getHeaders().get(Constants.HEADER_FILENAME));
+			String fileName = message.getHeaders().get(Constants.HEADER_FILENAME);
+			processGetRfc(fileName);
 		} else {
 			logger.info("Error processing request");
 		}
 	}
 
 	public void processRFCQuery() throws IOException {
+		String sentence = "";
+		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		toPeer.writeBytes(sentence);
+		// Write data
 		for (RFC rfc : RFCServer.getInstance().getCombinedRFCList()) {
 			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR + rfc.getTitle() + Constants.SEPARATOR
 					+ rfc.getHost() + Constants.SEPARATOR);
 		}
+		toPeer.writeBytes(Constants.CR_LF);
+		toPeer.close();
 	}
 
-	public void processGetRfc(String fileName) {
+	public void processGetRfc(String fileName) throws IOException {
+		String sentence = "";
+		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
+		sentence += Constants.CR_LF;
+		toPeer.writeBytes(sentence);
+		P2PUtil.sendRFC(toPeer, fileName);
+		toPeer.writeBytes(Constants.CR_LF);
+		toPeer.close();
 
 	}
 

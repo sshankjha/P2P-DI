@@ -3,6 +3,7 @@ package rfc;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class RFCServer {
 		}
 	}
 
-	public void addOwnRFC(int rfcNumber, String title) {
-		RFC newrfc = new RFC(rfcNumber, title, "");
+	public void addOwnRFC(int rfcNumber, String title) throws UnknownHostException {
+		RFC newrfc = new RFC(rfcNumber, title, P2PUtil.getLocalIpAddress());
 		rfcIndex.getOwnRFCList().add(newrfc);
 	}
 
