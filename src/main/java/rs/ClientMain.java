@@ -11,11 +11,11 @@ import util.RFC;
 
 public class ClientMain {
 	final static Logger logger = Logger.getLogger(ClientMain.class);
-	RFCClient rfcClient = new RFCClient();
-	static RSClient rsClient = new RSClient();
 
 	public static void main(String[] args) {
 		try {
+			RFCServer rfcServer = RFCServer.getInstance();
+			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
 			rsClient.keepAlive();
 			rsClient.pQuery();
@@ -26,7 +26,8 @@ public class ClientMain {
 		}
 	}
 
-	public void getFileFromPeer(String fileName) {
+	public static void getFileFromPeer(String fileName) {
+		RFCClient rfcClient = new RFCClient();
 		List<RFC> ownRFCList = RFCServer.getRfcIndex().getOwnRFCList();
 		for (RFC ownRFC : ownRFCList) {
 			if (fileName.equalsIgnoreCase(ownRFC.getTitle())) {
@@ -44,7 +45,7 @@ public class ClientMain {
 					if (fileName.equalsIgnoreCase(peerRFC.getTitle())) {
 						logger.info("FileName " + fileName + " found");
 						// change rfc number
-						rfcClient.getRfc(peerRFC.getHost(), rsClient.getPortForHost(peerRFC.getHost()), 0, fileName);
+						rfcClient.getRfc(peerRFC.getHost(), RSClient.getPortForHost(peerRFC.getHost()), 0, fileName);
 					}
 				}
 			}

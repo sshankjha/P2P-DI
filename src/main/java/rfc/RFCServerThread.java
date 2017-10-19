@@ -8,8 +8,6 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-import rs.RSServer;
-import rs.RSServerThread;
 import util.Constants;
 import util.MessageUtility;
 import util.P2PUtil;

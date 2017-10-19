@@ -44,7 +44,7 @@ public class P2PUtil {
 	}
 
 	public static void setCookieInFile() throws UnknownHostException {
-		int cookie = RSClient.cookie;
+		int cookie = P2PUtil.getCookieFromFile();
 		String cookieFileName = getCookieFileName();
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(cookieFileName))) {
 

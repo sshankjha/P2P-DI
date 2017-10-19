@@ -58,6 +58,7 @@ public class RSServerThread implements Runnable {
 
 	private void processRegister(RequestMessage message) throws IOException {
 		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
+		int rfcServerPort = Integer.parseInt(message.getHeader(Constants.HEADER_RFCPORT));
 		String sentence = "";
 		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
 		int cookieNum;
@@ -71,7 +72,7 @@ public class RSServerThread implements Runnable {
 		Peer peer = new Peer();
 		peer.setCookie(cookieNum);
 		// TODO Set port number of RFC SERVER from request
-		peer.setPortNumber(0);
+		peer.setPortNumber(rfcServerPort);
 		peer.setHostname(connectionSocket.getInetAddress().toString());
 		RSServer.getInstance().addUpdatePeer(peer);
 		sentence += Constants.HEADER_COOKIE + " " + cookieNum + Constants.CR_LF;

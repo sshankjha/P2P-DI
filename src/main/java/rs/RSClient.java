@@ -2,8 +2,10 @@ package rs;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,19 +20,10 @@ import util.ResponseMessage;
 
 public class RSClient {
 	final static Logger logger = Logger.getLogger(RSClient.class);
-	public static int cookie;
+	public int cookie;
+	int rfcServerPortNumber;
 
 	public static List<Peer> peerList = new ArrayList<Peer>();
-
-	public RSClient() {
-		// Read cookie from a file else set to a default value of 0
-		try {
-			cookie = P2PUtil.getCookieFromFile();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	public void register() {
 		try {
@@ -40,6 +33,7 @@ public class RSClient {
 			String sentence;
 			sentence = Constants.METHOD_REGISTER + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
 			sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
+			sentence += Constants.HEADER_RFCPORT + " " + rfcServerPortNumber + Constants.CR_LF;
 			sentence += Constants.CR_LF;
 			sentence += Constants.CR_LF;
 			toServer.writeBytes(sentence);
@@ -50,6 +44,13 @@ public class RSClient {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public RSClient(int rfcServerPortNumber) throws UnknownHostException, IOException {
+		// Read cookie from a file else set to a default value of 0
+		cookie = P2PUtil.getCookieFromFile();
+		this.rfcServerPortNumber = rfcServerPortNumber;
+
 	}
 
 	public void leave() {
@@ -83,7 +84,8 @@ public class RSClient {
 			toServer.writeBytes(sentence);
 			ResponseMessage response = MessageUtility.extractResponse(fromServer);
 			updatePeerList(response);
-			// List<Peer> peerlist = P2PUtil.deserialzePeerList(response.getData());
+			// List<Peer> peerlist =
+			// P2PUtil.deserialzePeerList(response.getData());
 			cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
 			setCookie();
 			socket.close();
@@ -129,7 +131,7 @@ public class RSClient {
 		}
 	}
 
-	public int getPortForHost(String hostName) {
+	public static int getPortForHost(String hostName) {
 		for (Peer peer : peerList) {
 			if (peer.getHostname().equalsIgnoreCase(hostName)) {
 				return peer.getPortNumber();
