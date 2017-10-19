@@ -59,13 +59,20 @@ public class P2PUtil {
 		}
 	}
 
-	public static void sendRFC(DataOutputStream toServer) throws UnknownHostException {
-		String cookieFileName = getCookieFileName();
-		try (BufferedReader br = new BufferedReader(new FileReader(cookieFileName))) {
+	public static void sendRFC(DataOutputStream toServer, String fileName) throws UnknownHostException {
+		try (BufferedReader br = new BufferedReader(new FileReader(Constants.RFC_PATH + fileName))) {
 			String sCurrentLine;
-			sCurrentLine = br.readLine();
-			toServer.writeBytes(sCurrentLine);
+			while ((sCurrentLine = br.readLine()) != null && !sCurrentLine.isEmpty()) {
+				toServer.writeBytes(sCurrentLine);
+			}
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
 
+	public static void saveRFCFile(String fomrServer, String fileName) throws UnknownHostException {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(Constants.RFC_PATH + fileName))) {
+			bw.write(String.valueOf(fomrServer));
 		} catch (Exception e) {
 			logger.error(e);
 		}
