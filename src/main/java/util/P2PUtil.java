@@ -2,6 +2,7 @@ package util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.Inet4Address;
@@ -55,6 +56,18 @@ public class P2PUtil {
 
 			logger.error(e);
 
+		}
+	}
+
+	public static void sendRFC(DataOutputStream toServer) throws UnknownHostException {
+		String cookieFileName = getCookieFileName();
+		try (BufferedReader br = new BufferedReader(new FileReader(cookieFileName))) {
+			String sCurrentLine;
+			sCurrentLine = br.readLine();
+			toServer.writeBytes(sCurrentLine);
+
+		} catch (Exception e) {
+			logger.error(e);
 		}
 	}
 

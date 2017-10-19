@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import rs.RSServerThread;
+import util.RFC;
 import util.RFCIndex;
 
 public class RFCServer {
@@ -32,6 +33,12 @@ public class RFCServer {
 			Thread t = new Thread(new RSServerThread(connectionSocket));
 			t.start();
 		}
+	}
+
+	public void addOwnRFC(int rfcNumber, String title) {
+		RFC newrfc = new RFC(rfcNumber, title);
+		rfcIndex.getOwnRFCList().add(newrfc);
+
 	}
 
 	public int getListneningSocket() {

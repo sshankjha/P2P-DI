@@ -1,5 +1,7 @@
 package util;
 
+import java.io.File;
+
 public final class Constants {
 
 	public static final int RS_PORT = 65432;
@@ -16,5 +18,6 @@ public final class Constants {
 	public static final String METHOD_RFCQUERY = "RFCQuery";
 	public static final String METHOD_GETRFC = "GetRFC";
 	public static final String SEPARATOR = "_";
+	public static final String RESOURCE_PATH = "main" + File.separator + "resources" + File.separator;
 
 }
