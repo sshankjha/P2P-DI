@@ -18,6 +18,14 @@ public class RFCServer {
 	private static RFCServer instance = null;
 	private static RFCIndex rfcIndex = new RFCIndex();
 
+	public static RFCIndex getRfcIndex() {
+		return rfcIndex;
+	}
+
+	public static void setRfcIndex(RFCIndex rfcIndex) {
+		RFCServer.rfcIndex = rfcIndex;
+	}
+
 	// Singleton Class
 	public static synchronized RFCServer getInstance() throws IOException {
 		if (instance == null) {
@@ -44,9 +52,14 @@ public class RFCServer {
 		rfcIndex.getOwnRFCList().add(newrfc);
 	}
 
-	public void addPeerRFC(List<RFC> peerRFC) {
+	public void addPeerRFC(List<RFC> fetchedPeerRFC) {
 		// filter for duplicate entries
-		rfcIndex.getPeerRFCList().addAll(peerRFC);
+		List<RFC> existingList = rfcIndex.getPeerRFCList();
+		for (RFC peerRFC : fetchedPeerRFC) {
+			if (!existingList.contains(peerRFC)) {
+				fetchedPeerRFC.add(peerRFC);
+			}
+		}
 	}
 
 	public List<RFC> getCombinedRFCList() {

@@ -3,7 +3,12 @@ package util;
 import java.util.Objects;
 
 public class RFC {
+
 	int RFCNumber;
+	String title;
+	String host;
+	int TTL = 7200;
+
 	public int getRFCNumber() {
 		return RFCNumber;
 	}
@@ -27,10 +32,6 @@ public class RFC {
 	public void setHost(String host) {
 		this.host = host;
 	}
-
-	String title;
-	String host;
-	int TTL = 7200;
 
 	public RFC() {
 		super();

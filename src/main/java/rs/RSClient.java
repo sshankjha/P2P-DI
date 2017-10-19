@@ -2,10 +2,8 @@ package rs;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,58 +22,74 @@ public class RSClient {
 
 	public static List<Peer> peerList = new ArrayList<Peer>();
 
-	public RSClient() throws UnknownHostException, IOException {
+	public RSClient() {
 		// Read cookie from a file else set to a default value of 0
-		cookie = P2PUtil.getCookieFromFile();
+		try {
+			cookie = P2PUtil.getCookieFromFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	public void register() throws IOException {
-		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
-		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
-		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		String sentence;
-		sentence = Constants.METHOD_REGISTER + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
-		sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		toServer.writeBytes(sentence);
-		ResponseMessage response = MessageUtility.extractResponse(fromServer);
-		cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
-		setCookie();
-		socket.close();
+	public void register() {
+		try {
+			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String sentence;
+			sentence = Constants.METHOD_REGISTER + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
+			sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			toServer.writeBytes(sentence);
+			ResponseMessage response = MessageUtility.extractResponse(fromServer);
+			cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
+			setCookie();
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void leave() throws UnknownHostException, IOException {
-		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
-		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
-		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		String sentence;
-		sentence = Constants.METHOD_LEAVE + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
-		sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		toServer.writeBytes(sentence);
-		ResponseMessage response = MessageUtility.extractResponse(fromServer);
-		socket.close();
+	public void leave() {
+		try {
+			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String sentence;
+			sentence = Constants.METHOD_LEAVE + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
+			sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			toServer.writeBytes(sentence);
+			ResponseMessage response = MessageUtility.extractResponse(fromServer);
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void pQuery() throws UnknownHostException, IOException, ClassNotFoundException {
-		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
-		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
-		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		String sentence;
-		sentence = Constants.METHOD_PQUERY + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
-		sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		toServer.writeBytes(sentence);
-		ResponseMessage response = MessageUtility.extractResponse(fromServer);
-		updatePeerList(response);
-		// List<Peer> peerlist = P2PUtil.deserialzePeerList(response.getData());
-		cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
-		setCookie();
-		socket.close();
+	public void pQuery() {
+		try {
+			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String sentence;
+			sentence = Constants.METHOD_PQUERY + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
+			sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			toServer.writeBytes(sentence);
+			ResponseMessage response = MessageUtility.extractResponse(fromServer);
+			updatePeerList(response);
+			// List<Peer> peerlist = P2PUtil.deserialzePeerList(response.getData());
+			cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
+			setCookie();
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void updatePeerList(Message msg) {
@@ -89,22 +103,38 @@ public class RSClient {
 		}
 	}
 
-	public void keepAlive() throws UnknownHostException, IOException {
-		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
-		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
-		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		String sentence;
-		sentence = Constants.METHOD_KEEPALIVE + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
-		sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		sentence += Constants.CR_LF;
-		toServer.writeBytes(sentence);
-		ResponseMessage response = MessageUtility.extractResponse(fromServer);
-		socket.close();
+	public void keepAlive() {
+		try {
+			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String sentence;
+			sentence = Constants.METHOD_KEEPALIVE + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
+			sentence += Constants.HEADER_COOKIE + " " + cookie + Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			toServer.writeBytes(sentence);
+			ResponseMessage response = MessageUtility.extractResponse(fromServer);
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void setCookie() throws UnknownHostException {
-		P2PUtil.setCookieInFile();
+	private void setCookie() {
+		try {
+			P2PUtil.setCookieInFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
+	public int getPortForHost(String hostName) {
+		for (Peer peer : peerList) {
+			if (peer.getHostname().equalsIgnoreCase(hostName)) {
+				return peer.getPortNumber();
+			}
+		}
+		return 0;
+	}
 }
