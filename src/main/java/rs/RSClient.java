@@ -21,18 +21,17 @@ import util.ResponseMessage;
 public class RSClient {
 	final static Logger logger = Logger.getLogger(RSClient.class);
 	public static int cookie;
-	public static String hostname;
+
 	public static List<Peer> peerList = new ArrayList<Peer>();
 
 	public RSClient() throws UnknownHostException, IOException {
 		// Read cookie from a file else set to a default value of 0
-		hostname = P2PUtil.getLocalIpAddress();
 		cookie = P2PUtil.getCookieFromFile();
 
 	}
 
 	public void register() throws IOException {
-		Socket socket = new Socket(hostname, Constants.RS_PORT);
+		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
 		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;
@@ -48,7 +47,7 @@ public class RSClient {
 	}
 
 	public void leave() throws UnknownHostException, IOException {
-		Socket socket = new Socket(hostname, Constants.RS_PORT);
+		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
 		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;
@@ -62,7 +61,7 @@ public class RSClient {
 	}
 
 	public void pQuery() throws UnknownHostException, IOException, ClassNotFoundException {
-		Socket socket = new Socket(hostname, Constants.RS_PORT);
+		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
 		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;
@@ -91,7 +90,7 @@ public class RSClient {
 	}
 
 	public void keepAlive() throws UnknownHostException, IOException {
-		Socket socket = new Socket(hostname, Constants.RS_PORT);
+		Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
 		DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;

@@ -17,12 +17,11 @@ public class P2PUtil {
 	final static Logger logger = Logger.getLogger(P2PUtil.class);
 
 	public static String getLocalIpAddress() throws UnknownHostException {
-		String address = Inet4Address.getLocalHost().getHostAddress();
-		return address;
+		return NetworkUtils.getLocalAddress();
 	}
 
 	public static String getCookieFileName() throws UnknownHostException {
-		return Constants.COOKIE + "_" + RSClient.hostname;
+		return Constants.COOKIE + "_" + P2PUtil.getLocalIpAddress();
 	}
 
 	/**

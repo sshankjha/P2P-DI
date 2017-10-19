@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.RSServerThread;
+import util.P2PUtil;
 import util.RFC;
 import util.RFCIndex;
 
@@ -37,8 +38,8 @@ public class RFCServer {
 		}
 	}
 
-	public void addOwnRFC(int rfcNumber, String title, String host) {
-		RFC newrfc = new RFC(rfcNumber, title, host);
+	public void addOwnRFC(int rfcNumber, String title) {
+		RFC newrfc = new RFC(rfcNumber, title, "");
 		rfcIndex.getOwnRFCList().add(newrfc);
 	}
 
