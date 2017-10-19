@@ -147,7 +147,7 @@ public class RSServerThread implements Runnable {
 			for (Peer peer : RSServer.getInstance().getPeerList()) {
 				if (peer.isActive())
 					toPeer.writeBytes(peer.getHostname() + Constants.SEPARATOR + peer.getPortNumber()
-							+ Constants.SEPARATOR + peer.getCookie());
+							+ Constants.SEPARATOR + peer.getCookie() + Constants.SEPARATOR);
 			}
 
 		}

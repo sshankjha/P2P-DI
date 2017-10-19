@@ -61,6 +61,7 @@ public class MessageUtility {
 			logger.error(e);
 			request = null;
 		}
+		logger.info(request);
 		return request;
 	}
 
@@ -75,6 +76,7 @@ public class MessageUtility {
 			logger.error(e);
 			response = null;
 		}
+		logger.info(response);
 		return response;
 	}
 

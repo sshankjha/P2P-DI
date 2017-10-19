@@ -9,7 +9,10 @@ public class ClientMain {
 		try {
 			RSClient client = new RSClient();
 			client.register();
+			client.keepAlive();
 			client.pQuery();
+			client.leave();
+			client.register();
 		} catch (Exception e) {
 			logger.error(e);
 		}

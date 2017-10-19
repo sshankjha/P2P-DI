@@ -44,7 +44,6 @@ public class RSClient {
 		ResponseMessage response = MessageUtility.extractResponse(fromServer);
 		cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
 		setCookie();
-		logger.info(response);
 		socket.close();
 	}
 
@@ -59,7 +58,6 @@ public class RSClient {
 		sentence += Constants.CR_LF;
 		toServer.writeBytes(sentence);
 		ResponseMessage response = MessageUtility.extractResponse(fromServer);
-		logger.info(response);
 		socket.close();
 	}
 
@@ -78,7 +76,6 @@ public class RSClient {
 		// List<Peer> peerlist = P2PUtil.deserialzePeerList(response.getData());
 		cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
 		setCookie();
-		logger.info(response);
 		socket.close();
 	}
 
@@ -104,7 +101,6 @@ public class RSClient {
 		sentence += Constants.CR_LF;
 		toServer.writeBytes(sentence);
 		ResponseMessage response = MessageUtility.extractResponse(fromServer);
-		logger.info(response);
 		socket.close();
 	}
 
