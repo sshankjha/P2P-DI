@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 public class NetworkUtils {
 
 	private static NetworkUtils instance;
-	private static String hostname;
+	private String hostname;
 
 	private NetworkUtils() {
 		super();
@@ -15,7 +15,7 @@ public class NetworkUtils {
 	public static synchronized NetworkUtils getInstance() throws UnknownHostException {
 		if (instance == null) {
 			instance = new NetworkUtils();
-			hostname = Inet4Address.getLocalHost().getHostAddress();
+			instance.hostname = Inet4Address.getLocalHost().getHostAddress();
 		}
 		return instance;
 	}
