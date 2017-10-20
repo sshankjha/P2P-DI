@@ -60,7 +60,7 @@ public class RFCServer {
 		logger.info("Inside RFCServer.listen()");
 		while (true) {
 			Socket connectionSocket = welcomeSocket.accept();
-			Thread t = new Thread(new RSServerThread(connectionSocket));
+			Thread t = new Thread(new RFCServerThread(connectionSocket));
 			t.start();
 		}
 	}
