@@ -1,5 +1,6 @@
 package rfc;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.RSServerThread;
+import util.Constants;
 import util.P2PUtil;
 import util.RFC;
 import util.RFCIndex;
@@ -29,6 +31,8 @@ public class RFCServer {
 	// Singleton Class
 	public static synchronized RFCServer getInstance() throws IOException {
 		if (instance == null) {
+			// Creating directory to read and save rfc files
+			new File(Constants.RFC_PATH).mkdirs();
 			instance = new RFCServer();
 		}
 		return instance;
