@@ -78,7 +78,7 @@ public class RSServerThread implements Runnable {
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
-		toPeer.close();
+		connectionSocket.close();
 
 	}
 
@@ -92,7 +92,7 @@ public class RSServerThread implements Runnable {
 		// Sending PeerList
 		sendPeerList();
 		toPeer.writeBytes(Constants.CR_LF);
-		toPeer.close();
+		connectionSocket.close();
 
 	}
 
@@ -109,7 +109,7 @@ public class RSServerThread implements Runnable {
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
-		toPeer.close();
+		connectionSocket.close();
 	}
 
 	public void processKeepAlive(RequestMessage message) throws IOException {
@@ -127,7 +127,7 @@ public class RSServerThread implements Runnable {
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
-		toPeer.close();
+		connectionSocket.close();
 	}
 
 	/**

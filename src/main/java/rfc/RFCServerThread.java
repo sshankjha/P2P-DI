@@ -60,7 +60,7 @@ public class RFCServerThread implements Runnable {
 					+ rfc.getHost() + Constants.SEPARATOR);
 		}
 		toPeer.writeBytes(Constants.CR_LF);
-		toPeer.close();
+		connectionSocket.close();
 	}
 
 	public void processGetRfc(String fileName) throws IOException {
@@ -70,7 +70,7 @@ public class RFCServerThread implements Runnable {
 		toPeer.writeBytes(sentence);
 		P2PUtil.sendRFC(toPeer, fileName);
 		toPeer.writeBytes(Constants.CR_LF);
-		toPeer.close();
+		connectionSocket.close();
 
 	}
 

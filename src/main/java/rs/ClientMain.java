@@ -19,6 +19,7 @@ public class ClientMain {
 			rsClient.register();
 			rsClient.keepAlive();
 			rsClient.pQuery();
+			rfcServer.addOwnRFC(1, "firstrfc.txt");
 			logger.info("Execution Complete");
 			// rsClient.leave();
 			// rsClient.register();
