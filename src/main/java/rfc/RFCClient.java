@@ -25,6 +25,7 @@ public class RFCClient {
 		String sentence;
 		sentence = Constants.METHOD_RFCQUERY + " " + Constants.PROTOCOL_VERSION + Constants.CR_LF;
 		sentence += Constants.CR_LF;
+		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 		ResponseMessage response = MessageUtility.extractResponse(fromPeer);
 		fetchRFCList(response);
@@ -51,8 +52,9 @@ public class RFCClient {
 		BufferedReader fromPeer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;
 		sentence = Constants.METHOD_GETRFC + " " + Constants.PROTOCOL_VERSION + " " + Constants.CR_LF;
-		sentence = Constants.HEADER_FILENAME + " " + fileName + " " + Constants.CR_LF;
-		sentence = Constants.HEADER_RFCNUMBER + " " + rfcNumber + " " + Constants.CR_LF;
+		sentence += Constants.HEADER_FILENAME + " " + fileName + " " + Constants.CR_LF;
+		sentence += Constants.HEADER_RFCNUMBER + " " + rfcNumber + " " + Constants.CR_LF;
+		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 		ResponseMessage response = MessageUtility.extractResponse(fromPeer);

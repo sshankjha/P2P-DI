@@ -75,7 +75,7 @@ public class RFCServer {
 		List<RFC> existingList = rfcIndex.getPeerRFCList();
 		for (RFC peerRFC : fetchedPeerRFC) {
 			if (!existingList.contains(peerRFC)) {
-				fetchedPeerRFC.add(peerRFC);
+				existingList.add(peerRFC);
 			}
 		}
 	}
