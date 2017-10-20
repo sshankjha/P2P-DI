@@ -41,12 +41,11 @@ public class P2PUtil {
 		return cookie;
 	}
 
-	public static void setCookieInFile() throws UnknownHostException {
-		int cookie = P2PUtil.getCookieFromFile();
+	public static void setCookieInFile(int cookienum) throws UnknownHostException {
 		String cookieFileName = getCookieFileName();
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(cookieFileName))) {
 
-			bw.write(String.valueOf(cookie));
+			bw.write(String.valueOf(cookienum));
 
 		} catch (Exception e) {
 

@@ -125,7 +125,7 @@ public class RSClient {
 
 	private void setCookie() {
 		try {
-			P2PUtil.setCookieInFile();
+			P2PUtil.setCookieInFile(cookie);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
