@@ -72,7 +72,7 @@ public class RSServerThread implements Runnable {
 		peer.setCookie(cookieNum);
 		// TODO Set port number of RFC SERVER from request
 		peer.setPortNumber(rfcServerPort);
-		peer.setHostname(connectionSocket.getInetAddress().toString());
+		peer.setHostname(connectionSocket.getInetAddress().toString().replaceAll("/", ""));
 		RSServer.getInstance().addUpdatePeer(peer);
 		sentence += Constants.HEADER_COOKIE + " " + cookieNum + Constants.CR_LF;
 		sentence += Constants.CR_LF;
@@ -121,7 +121,7 @@ public class RSServerThread implements Runnable {
 		peer.setCookie(requestCookie);
 		// TODO Set port number of RFC SERVER from request
 		peer.setPortNumber(0);
-		peer.setHostname(connectionSocket.getInetAddress().toString());
+		peer.setHostname(connectionSocket.getInetAddress().toString().replaceAll("/", ""));
 		RSServer.getInstance().updatePeer(peer);
 		sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
 		sentence += Constants.CR_LF;

@@ -75,6 +75,7 @@ public class MessageUtility {
 			logger.error("Error parsing request");
 			logger.error(e);
 			response = null;
+			e.printStackTrace();
 		}
 		logger.info(response);
 		return response;
