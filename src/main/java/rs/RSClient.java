@@ -27,7 +27,7 @@ public class RSClient {
 
 	public void register() {
 		try {
-			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			Socket socket = new Socket(Constants.RS_IP, Constants.RS_PORT);
 			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String sentence;
@@ -55,7 +55,7 @@ public class RSClient {
 
 	public void leave() {
 		try {
-			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			Socket socket = new Socket(Constants.RS_IP, Constants.RS_PORT);
 			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String sentence;
@@ -73,7 +73,7 @@ public class RSClient {
 
 	public void pQuery() {
 		try {
-			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			Socket socket = new Socket(Constants.RS_IP, Constants.RS_PORT);
 			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String sentence;
@@ -107,7 +107,7 @@ public class RSClient {
 
 	public void keepAlive() {
 		try {
-			Socket socket = new Socket(P2PUtil.getLocalIpAddress(), Constants.RS_PORT);
+			Socket socket = new Socket(Constants.RS_IP, Constants.RS_PORT);
 			DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
 			BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String sentence;

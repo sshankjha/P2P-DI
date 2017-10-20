@@ -19,8 +19,9 @@ public class ClientMain {
 			rsClient.register();
 			rsClient.keepAlive();
 			rsClient.pQuery();
-			rsClient.leave();
-			rsClient.register();
+			logger.info("Execution Complete");
+			// rsClient.leave();
+			// rsClient.register();
 		} catch (Exception e) {
 			logger.error(e);
 		}

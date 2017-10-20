@@ -38,7 +38,6 @@ public class RSServerThread implements Runnable {
 
 	private void processRequest() throws IOException {
 		RequestMessage message = MessageUtility.extractRequest(fromPeer);
-		logger.info(message);
 		// TODO Validate against peers - for now assume cookie is correct
 		// TODO Check for invalid request/negative cookie number
 		if (Constants.METHOD_REGISTER.equals(message.getMethod())) {

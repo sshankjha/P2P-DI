@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import rs.RSServerThread;
 import util.Constants;
 import util.P2PUtil;
@@ -15,8 +17,8 @@ import util.RFC;
 import util.RFCIndex;
 
 public class RFCServer {
-
-	private ServerSocket welcomeSocket;
+	final static Logger logger = Logger.getLogger(RFCServer.class);
+	private static ServerSocket welcomeSocket;
 	private static RFCServer instance = null;
 	private static RFCIndex rfcIndex = new RFCIndex();
 
@@ -34,16 +36,28 @@ public class RFCServer {
 			// Creating directory to read and save rfc files
 			new File(Constants.RFC_PATH).mkdirs();
 			instance = new RFCServer();
+			Thread thread = new Thread("RFC_LISTNER") {
+				public void run() {
+					try {
+						RFCServer.listen(welcomeSocket);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						logger.error(e);
+					}
+				}
+			};
+			thread.start();
 		}
 		return instance;
 	}
 
 	private RFCServer() throws IOException {
 		super();
-		welcomeSocket = new ServerSocket();
+		welcomeSocket = new ServerSocket(0);
 	}
 
-	public void listen() throws IOException {
+	public static void listen(ServerSocket welcomeSocket) throws IOException {
+		logger.info("Inside RFCServer.listen()");
 		while (true) {
 			Socket connectionSocket = welcomeSocket.accept();
 			Thread t = new Thread(new RSServerThread(connectionSocket));
