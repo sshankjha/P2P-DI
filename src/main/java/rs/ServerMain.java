@@ -8,7 +8,7 @@ public class ServerMain {
 	final static Logger logger = Logger.getLogger(ServerMain.class);
 
 	public static void main(String[] args) throws IOException {
-		logger.info("Starting Listner");
+		logger.info("Starting Listener");
 		RSServer.getInstance().listen();
 	}
 

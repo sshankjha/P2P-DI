@@ -20,6 +20,7 @@ public class ClientMain {
 			rsClient.keepAlive();
 			rsClient.pQuery();
 			getFileFromPeer("firstrfc.txt");
+			//rfcServer.addOwnRFC(1, "firstrfc.txt");
 			logger.info("Execution Complete");
 			// rsClient.leave();
 			// rsClient.register();
