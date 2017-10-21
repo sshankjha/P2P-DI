@@ -83,11 +83,15 @@ public class RSClient {
 			sentence += Constants.CR_LF;
 			toServer.writeBytes(sentence);
 			ResponseMessage response = MessageUtility.extractResponse(fromServer);
-			updatePeerList(response);
-			// List<Peer> peerlist =
-			// P2PUtil.deserialzePeerList(response.getData());
-			cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
-			setCookie();
+			if (response.getStatus().equals(String.valueOf(Constants.STATUS_OK))) {
+				updatePeerList(response);
+				// List<Peer> peerlist =
+				// P2PUtil.deserialzePeerList(response.getData());
+				cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
+				setCookie();
+			} else {
+				logger.info("No active peers present");
+			}
 			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();

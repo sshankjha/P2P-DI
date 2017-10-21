@@ -85,15 +85,32 @@ public class RSServerThread implements Runnable {
 	private void processPQuery(RequestMessage message) throws IOException {
 		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
 		String sentence = "";
-		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
-		sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
-		sentence += Constants.CR_LF;
+		if (isActivePeerPresent()) {
+			sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
+			sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			// Sending PeerList
+			sendPeerList();
+		} else {
+			sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_ERROR + Constants.CR_LF;
+			sentence += Constants.CR_LF;
+			sentence += Constants.CR_LF;
+		}
 		toPeer.writeBytes(sentence);
-		// Sending PeerList
-		sendPeerList();
-		toPeer.writeBytes(Constants.CR_LF);
 		connectionSocket.close();
+	}
 
+	private boolean isActivePeerPresent() throws IOException {
+		String requestingPeerIP = connectionSocket.getInetAddress().toString().replaceAll("/", "");
+		synchronized (RSServer.getInstance().getPeerList()) {
+			for (Peer peer : RSServer.getInstance().getPeerList()) {
+				if (!peer.getHostname().equals(requestingPeerIP) && peer.isActive()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private void processLeave(RequestMessage message) throws IOException {
@@ -142,14 +159,13 @@ public class RSServerThread implements Runnable {
 	}
 
 	private void sendPeerList() throws IOException {
+		String requestingPeerIP = connectionSocket.getInetAddress().toString().replaceAll("/", "");
 		synchronized (RSServer.getInstance().getPeerList()) {
 			for (Peer peer : RSServer.getInstance().getPeerList()) {
-				if (peer.isActive())
+				if (!peer.getHostname().equals(requestingPeerIP) && peer.isActive())
 					toPeer.writeBytes(peer.getHostname() + Constants.SEPARATOR + peer.getPortNumber()
 							+ Constants.SEPARATOR + peer.getCookie() + Constants.SEPARATOR);
 			}
-
 		}
 	}
-
 }

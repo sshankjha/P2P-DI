@@ -11,5 +11,4 @@ public class ServerMain {
 		logger.info("Starting Listener");
 		RSServer.getInstance().listen();
 	}
-
 }
