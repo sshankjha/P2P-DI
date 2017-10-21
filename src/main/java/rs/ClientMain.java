@@ -19,6 +19,7 @@ public class ClientMain {
 			rsClient.register();
 			rsClient.keepAlive();
 			rsClient.pQuery();
+			getFileFromPeer("firstrfc.txt");
 			logger.info("Execution Complete");
 			// rsClient.leave();
 			// rsClient.register();
@@ -47,6 +48,7 @@ public class ClientMain {
 						logger.info("FileName " + fileName + " found");
 						// change rfc number
 						rfcClient.getRfc(peerRFC.getHost(), RSClient.getPortForHost(peerRFC.getHost()), 0, fileName);
+						return;
 					}
 				}
 			}
