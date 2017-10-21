@@ -49,40 +49,37 @@ public class RSServer {
 
 	public void addUpdatePeer(Peer newPeer) {
 		synchronized (peerList) {
-			boolean flag = true;
-			for (Peer peer : peerList) {
-				if (peer.equals(newPeer)) {
-					peer.setTTL(7200);
-					peer.setPortNumber(newPeer.getPortNumber());
-					peer.setLastRegistrationTime(new Date());
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
+			if (peerList.contains(newPeer)) {
+				Peer peer = peerList.get(peerList.indexOf(newPeer));
+				peer.setTTL(7200);
+				peer.setPortNumber(newPeer.getPortNumber());
+				peer.setLastRegistrationTime(new Date());
+				peer.setStatus(true);
+			} else {
 				peerList.add(newPeer);
 			}
 		}
-		peerList.add(newPeer);
 	}
 
 	public void updatePeer(Peer newPeer) {
 		synchronized (peerList) {
-			for (Peer peer : peerList) {
-				if (peer.equals(newPeer)) {
-					peer.setTTL(7200);
-					break;
-				}
+			if (peerList.contains(newPeer)) {
+				Peer peer = peerList.get(peerList.indexOf(newPeer));
+				peer.setTTL(7200);
+				peer.setStatus(true);
 			}
 		}
 	}
 
-	public void removePeer(Peer newPeer) {
-		peerList.remove(newPeer);
+	public void removePeer(Peer peerToRemove) {
+		synchronized (peerList) {
+			if (peerList.contains(peerToRemove)) {
+				peerList.get(peerList.indexOf(peerToRemove)).setStatus(false);
+			}
+		}
 	}
 
 	public List<Peer> getPeerList() {
 		return peerList;
 	}
-
 }
