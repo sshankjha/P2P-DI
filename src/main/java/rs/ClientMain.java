@@ -17,15 +17,9 @@ public class ClientMain {
 			RFCServer rfcServer = RFCServer.getInstance();
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
-			// rsClient.keepAlive();
-			// rsClient.leave();
-			rsClient.pQuery();
-			getFileFromPeer("firstrfc.txt");
-			// rsClient.pQuery();
-			getFileFromPeer("secondrfc.txt");
-			// rfcServer.addOwnRFC(1, "firstrfc.txt");
-			// rsClient.register();
-			// System.out.println("firstrfc.txt added");
+			rfcServer.addOwnRFC(1);
+			//rsClient.pQuery();
+			//getFileFromPeer("firstrfc.txt");
 			logger.info("Execution Complete");
 
 		} catch (Exception e) {

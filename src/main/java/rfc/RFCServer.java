@@ -65,8 +65,8 @@ public class RFCServer {
 		}
 	}
 
-	public void addOwnRFC(int rfcNumber, String title) throws UnknownHostException {
-		RFC newrfc = new RFC(rfcNumber, title, P2PUtil.getLocalIpAddress());
+	public void addOwnRFC(int rfcNumber) throws UnknownHostException {
+		RFC newrfc = new RFC(rfcNumber, P2PUtil.getLocalIpAddress());
 		rfcIndex.getOwnRFCList().add(newrfc);
 	}
 

@@ -5,7 +5,6 @@ import java.util.Objects;
 public class RFC {
 
 	int RFCNumber;
-	String title;
 	String host;
 	int TTL = 7200;
 
@@ -18,11 +17,7 @@ public class RFC {
 	}
 
 	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+		return String.valueOf(RFCNumber);
 	}
 
 	public String getHost() {
@@ -37,16 +32,15 @@ public class RFC {
 		super();
 	}
 
-	public RFC(int rfcNumber, String title, String host) {
+	public RFC(int rfcNumber, String host) {
 		super();
 		this.RFCNumber = rfcNumber;
-		this.title = title;
 		this.host = host;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(RFCNumber, title);
+		return Objects.hash(RFCNumber);
 	}
 
 	@Override
@@ -57,6 +51,6 @@ public class RFC {
 			return false;
 		}
 		RFC rfcObj = (RFC) otherObject;
-		return RFCNumber == rfcObj.RFCNumber && Objects.equals(title, rfcObj.title);
+		return RFCNumber == rfcObj.RFCNumber;
 	}
 }
