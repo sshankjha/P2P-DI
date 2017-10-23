@@ -37,7 +37,7 @@ public class RFCClient {
 		List<RFC> rfcListFromPeer = new ArrayList<RFC>();
 		String data = response.getData();
 		String[] values = data.split(Constants.SEPARATOR);
-		for (int iter = 0; iter < values.length; iter += 4) {
+		for (int iter = 0; iter < values.length; iter += 3) {
 			if (values[iter + 2] != P2PUtil.getLocalIpAddress()) {
 				rfcListFromPeer.add(new RFC(Integer.parseInt(values[iter]), values[iter + 1], values[iter + 2]));
 			}
@@ -47,7 +47,6 @@ public class RFCClient {
 
 	public void getRfc(String peerName, int peerPort, int rfcNumber, String fileName)
 			throws UnknownHostException, IOException {
-		System.out.println("PeerName: " + peerName + " PeerPort: "+ peerPort);
 		Socket socket = new Socket(peerName, peerPort);
 		DataOutputStream toPeer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromPeer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
