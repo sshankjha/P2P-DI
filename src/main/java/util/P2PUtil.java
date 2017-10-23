@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.UnknownHostException;
+import java.util.Base64;
 
 import org.apache.log4j.Logger;
 
@@ -61,10 +62,13 @@ public class P2PUtil {
 	public static void sendRFC(DataOutputStream toServer, int rfcNumber) throws UnknownHostException {
 		try (BufferedReader br = new BufferedReader(
 				new FileReader(Constants.RFC_PATH + getFileNameFromRFCNumber(rfcNumber)))) {
+			StringBuilder data = new StringBuilder("");
 			String sCurrentLine;
-			while ((sCurrentLine = br.readLine()) != null && !sCurrentLine.isEmpty()) {
-				toServer.writeBytes(sCurrentLine);
+			while ((sCurrentLine = br.readLine()) != null) {
+				data.append(sCurrentLine + Constants.CR_LF);
 			}
+			System.out.println(Base64.getEncoder().encode(data.toString().getBytes()));
+			toServer.write(Base64.getEncoder().encode(data.toString().getBytes()));
 		} catch (Exception e) {
 			logger.error(e);
 		}
@@ -73,7 +77,7 @@ public class P2PUtil {
 	public static void saveRFCFile(String fomrServer, int rfcNumber) throws UnknownHostException {
 		try (BufferedWriter bw = new BufferedWriter(
 				new FileWriter(Constants.RFC_PATH + getFileNameFromRFCNumber(rfcNumber)))) {
-			bw.write(String.valueOf(fomrServer));
+			bw.write(new String(Base64.getDecoder().decode(fomrServer)));
 		} catch (Exception e) {
 			logger.error(e);
 		}
