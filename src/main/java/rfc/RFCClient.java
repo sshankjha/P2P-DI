@@ -47,6 +47,7 @@ public class RFCClient {
 
 	public void getRfc(String peerName, int peerPort, int rfcNumber, String fileName)
 			throws UnknownHostException, IOException {
+		System.out.println("PeerName: " + peerName + " PeerPort: "+ peerPort);
 		Socket socket = new Socket(peerName, peerPort);
 		DataOutputStream toPeer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromPeer = new BufferedReader(new InputStreamReader(socket.getInputStream()));

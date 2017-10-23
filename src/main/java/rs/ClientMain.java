@@ -17,13 +17,17 @@ public class ClientMain {
 			RFCServer rfcServer = RFCServer.getInstance();
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
-			rsClient.keepAlive();
+			// rsClient.keepAlive();
+			// rsClient.leave();
 			rsClient.pQuery();
 			getFileFromPeer("firstrfc.txt");
-			//rfcServer.addOwnRFC(1, "firstrfc.txt");
-			logger.info("Execution Complete");
-			// rsClient.leave();
+			// rsClient.pQuery();
+			getFileFromPeer("secondrfc.txt");
+			// rfcServer.addOwnRFC(1, "firstrfc.txt");
 			// rsClient.register();
+			// System.out.println("firstrfc.txt added");
+			logger.info("Execution Complete");
+
 		} catch (Exception e) {
 			logger.error(e);
 		}
@@ -42,11 +46,11 @@ public class ClientMain {
 			List<Peer> peers = RSClient.peerList;
 			for (Peer peer : peers) {
 				rfcClient.rfcQuery(peer.getHostname(), peer.getPortNumber());
-				logger.info("RfcQuery done for peer " + peer);
+				logger.info("RfcQuery done for peer " + peer.getHostname() + ":" + peer.getPortNumber());
 				List<RFC> peerRFCList = RFCServer.getRfcIndex().getPeerRFCList();
 				for (RFC peerRFC : peerRFCList) {
 					if (fileName.equalsIgnoreCase(peerRFC.getTitle())) {
-						logger.info("FileName " + fileName + " found");
+						logger.info("FileName " + fileName + " found at " + peerRFC.getHost());
 						// change rfc number
 						rfcClient.getRfc(peerRFC.getHost(), RSClient.getPortForHost(peerRFC.getHost()), 0, fileName);
 						return;

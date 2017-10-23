@@ -20,7 +20,12 @@ public class NetworkUtils {
 		return instance;
 	}
 
-	public static String getLocalAddress() throws UnknownHostException {
-		return NetworkUtils.getInstance().hostname;
+	public static String getLocalAddress() {
+		try {
+			return NetworkUtils.getInstance().hostname;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

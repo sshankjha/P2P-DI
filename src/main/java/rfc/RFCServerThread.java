@@ -60,6 +60,7 @@ public class RFCServerThread implements Runnable {
 					+ rfc.getHost() + Constants.SEPARATOR);
 		}
 		toPeer.writeBytes(Constants.CR_LF);
+		toPeer.writeBytes(Constants.CR_LF);
 		connectionSocket.close();
 	}
 
@@ -69,6 +70,7 @@ public class RFCServerThread implements Runnable {
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 		P2PUtil.sendRFC(toPeer, fileName);
+		toPeer.writeBytes(Constants.CR_LF);
 		toPeer.writeBytes(Constants.CR_LF);
 		connectionSocket.close();
 

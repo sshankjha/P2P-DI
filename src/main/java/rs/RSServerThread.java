@@ -89,23 +89,25 @@ public class RSServerThread implements Runnable {
 			sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
 			sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
 			sentence += Constants.CR_LF;
-			sentence += Constants.CR_LF;
 			// Sending PeerList
-			sendPeerList();
+			sentence += sendPeerList();
 		} else {
 			sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_ERROR + Constants.CR_LF;
-			sentence += Constants.CR_LF;
-			sentence += Constants.CR_LF;
+			sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
 		}
+		sentence += Constants.CR_LF;
+		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 		connectionSocket.close();
 	}
 
 	private boolean isActivePeerPresent() throws IOException {
 		String requestingPeerIP = connectionSocket.getInetAddress().toString().replaceAll("/", "");
+		int requestingPeerPort = connectionSocket.getPort();
 		synchronized (RSServer.getInstance().getPeerList()) {
 			for (Peer peer : RSServer.getInstance().getPeerList()) {
-				if (!peer.getHostname().equals(requestingPeerIP) && peer.isActive()) {
+				if (!(peer.getHostname().equals(requestingPeerIP) && peer.getPortNumber() == requestingPeerPort)
+						&& peer.isActive()) {
 					return true;
 				}
 			}
@@ -158,14 +160,19 @@ public class RSServerThread implements Runnable {
 		}
 	}
 
-	private void sendPeerList() throws IOException {
+	private String sendPeerList() throws IOException {
+		String statement = "";
 		String requestingPeerIP = connectionSocket.getInetAddress().toString().replaceAll("/", "");
+		int requestingPeerPort = connectionSocket.getPort();
 		synchronized (RSServer.getInstance().getPeerList()) {
 			for (Peer peer : RSServer.getInstance().getPeerList()) {
-				if (!peer.getHostname().equals(requestingPeerIP) && peer.isActive())
-					toPeer.writeBytes(peer.getHostname() + Constants.SEPARATOR + peer.getPortNumber()
-							+ Constants.SEPARATOR + peer.getCookie() + Constants.SEPARATOR);
+				if (!(peer.getHostname().equals(requestingPeerIP) && peer.getPortNumber() == requestingPeerPort)
+						&& peer.isActive()) {
+					statement += peer.getHostname() + Constants.SEPARATOR + peer.getPortNumber() + Constants.SEPARATOR
+							+ peer.getCookie() + Constants.SEPARATOR;
+				}
 			}
 		}
+		return statement;
 	}
 }
