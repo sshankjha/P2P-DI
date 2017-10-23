@@ -18,8 +18,8 @@ public class ClientMain {
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
 			rfcServer.addOwnRFC(1);
-			//rsClient.pQuery();
-			//getFileFromPeer("firstrfc.txt");
+			// rsClient.pQuery();
+			//getFileFromPeer(1);
 			logger.info("Execution Complete");
 
 		} catch (Exception e) {
@@ -27,11 +27,11 @@ public class ClientMain {
 		}
 	}
 
-	public static void getFileFromPeer(String fileName) {
+	public static void getFileFromPeer(int RFCNumber) {
 		RFCClient rfcClient = new RFCClient();
 		List<RFC> ownRFCList = RFCServer.getRfcIndex().getOwnRFCList();
 		for (RFC ownRFC : ownRFCList) {
-			if (fileName.equalsIgnoreCase(ownRFC.getTitle())) {
+			if (RFCNumber == ownRFC.getRFCNumber()) {
 				logger.info("RFC already present in same client");
 				return;
 			}
@@ -43,10 +43,10 @@ public class ClientMain {
 				logger.info("RfcQuery done for peer " + peer.getHostname() + ":" + peer.getPortNumber());
 				List<RFC> peerRFCList = RFCServer.getRfcIndex().getPeerRFCList();
 				for (RFC peerRFC : peerRFCList) {
-					if (fileName.equalsIgnoreCase(peerRFC.getTitle())) {
-						logger.info("FileName " + fileName + " found at " + peerRFC.getHost());
+					if (RFCNumber == peerRFC.getRFCNumber()) {
+						logger.info("FileName " + peerRFC.getTitle() + " found at " + peerRFC.getHost());
 						// change rfc number
-						rfcClient.getRfc(peerRFC.getHost(), RSClient.getPortForHost(peerRFC.getHost()), 0, fileName);
+						rfcClient.getRfc(peerRFC.getHost(), RSClient.getPortForHost(peerRFC.getHost()), RFCNumber);
 						return;
 					}
 				}

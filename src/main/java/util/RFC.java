@@ -17,7 +17,7 @@ public class RFC {
 	}
 
 	public String getTitle() {
-		return String.valueOf(RFCNumber);
+		return String.valueOf(RFCNumber) + Constants.RFC_FILE_EXTENSION;
 	}
 
 	public String getHost() {

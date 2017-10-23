@@ -5,7 +5,8 @@ import java.io.File;
 public final class Constants {
 
 	public static final int RS_PORT = 65432;// RS Server Port
-	public static final String RS_IP = NetworkUtils.getLocalAddress();// RS Server IP
+	// RS Server IP
+	public static final String RS_IP = NetworkUtils.getLocalAddress();
 	public static final String COOKIE = "cookie";
 	public static final String PROTOCOL_VERSION = "P2P-DI/1.0";
 	public static final String CR_LF = "\r\n";
@@ -19,10 +20,10 @@ public final class Constants {
 	public static final String METHOD_LEAVE = "Leave";
 	public static final String METHOD_RFCQUERY = "RFCQuery";
 	public static final String METHOD_GETRFC = "GetRFC";
-	public static final String HEADER_FILENAME = "FILENAME";
 	public static final String HEADER_RFCNUMBER = "RFCNUMBER";
 	public static final String SEPARATOR = "_";
 	public static final String RESOURCE_PATH = "main" + File.separator + "resources" + File.separator;
 	public static final String RFC_PATH = "rfc" + File.separator;
+	public static final String RFC_FILE_EXTENSION = ".txt";
 
 }

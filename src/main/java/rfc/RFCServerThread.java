@@ -42,8 +42,8 @@ public class RFCServerThread implements Runnable {
 		if (message.getMethod().equals(Constants.METHOD_RFCQUERY)) {
 			processRFCQuery();
 		} else if (message.getMethod().equals(Constants.METHOD_GETRFC)) {
-			String fileName = message.getHeaders().get(Constants.HEADER_FILENAME);
-			processGetRfc(fileName);
+			int rfcNumber = Integer.parseInt(message.getHeaders().get(Constants.HEADER_RFCNUMBER));
+			processGetRfc(rfcNumber);
 		} else {
 			logger.info("Error processing request");
 		}
@@ -56,20 +56,19 @@ public class RFCServerThread implements Runnable {
 		toPeer.writeBytes(sentence);
 		// Write data
 		for (RFC rfc : RFCServer.getInstance().getCombinedRFCList()) {
-			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR
-					+ rfc.getHost() + Constants.SEPARATOR);
+			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR + rfc.getHost() + Constants.SEPARATOR);
 		}
 		toPeer.writeBytes(Constants.CR_LF);
 		toPeer.writeBytes(Constants.CR_LF);
 		connectionSocket.close();
 	}
 
-	public void processGetRfc(String fileName) throws IOException {
+	public void processGetRfc(int rfcNumber) throws IOException {
 		String sentence = "";
 		sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
-		P2PUtil.sendRFC(toPeer, fileName);
+		P2PUtil.sendRFC(toPeer, rfcNumber);
 		toPeer.writeBytes(Constants.CR_LF);
 		toPeer.writeBytes(Constants.CR_LF);
 		connectionSocket.close();

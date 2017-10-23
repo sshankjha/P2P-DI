@@ -54,8 +54,13 @@ public class P2PUtil {
 		}
 	}
 
-	public static void sendRFC(DataOutputStream toServer, String fileName) throws UnknownHostException {
-		try (BufferedReader br = new BufferedReader(new FileReader(Constants.RFC_PATH + fileName))) {
+	public static String getFileNameFromRFCNumber(int rfcNumber) {
+		return rfcNumber + Constants.RFC_FILE_EXTENSION;
+	}
+
+	public static void sendRFC(DataOutputStream toServer, int rfcNumber) throws UnknownHostException {
+		try (BufferedReader br = new BufferedReader(
+				new FileReader(Constants.RFC_PATH + getFileNameFromRFCNumber(rfcNumber)))) {
 			String sCurrentLine;
 			while ((sCurrentLine = br.readLine()) != null && !sCurrentLine.isEmpty()) {
 				toServer.writeBytes(sCurrentLine);
@@ -65,8 +70,9 @@ public class P2PUtil {
 		}
 	}
 
-	public static void saveRFCFile(String fomrServer, String fileName) throws UnknownHostException {
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(Constants.RFC_PATH + fileName))) {
+	public static void saveRFCFile(String fomrServer, int rfcNumber) throws UnknownHostException {
+		try (BufferedWriter bw = new BufferedWriter(
+				new FileWriter(Constants.RFC_PATH + getFileNameFromRFCNumber(rfcNumber)))) {
 			bw.write(String.valueOf(fomrServer));
 		} catch (Exception e) {
 			logger.error(e);

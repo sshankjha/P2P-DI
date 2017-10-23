@@ -45,21 +45,19 @@ public class RFCClient {
 		RFCServer.getInstance().addPeerRFC(rfcListFromPeer);
 	}
 
-	public void getRfc(String peerName, int peerPort, int rfcNumber, String fileName)
-			throws UnknownHostException, IOException {
+	public void getRfc(String peerName, int peerPort, int rfcNumber) throws UnknownHostException, IOException {
 		Socket socket = new Socket(peerName, peerPort);
 		DataOutputStream toPeer = new DataOutputStream(socket.getOutputStream());
 		BufferedReader fromPeer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String sentence;
 		sentence = Constants.METHOD_GETRFC + " " + Constants.PROTOCOL_VERSION + " " + Constants.CR_LF;
-		sentence += Constants.HEADER_FILENAME + " " + fileName + " " + Constants.CR_LF;
 		sentence += Constants.HEADER_RFCNUMBER + " " + rfcNumber + " " + Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		sentence += Constants.CR_LF;
 		toPeer.writeBytes(sentence);
 		ResponseMessage response = MessageUtility.extractResponse(fromPeer);
 		String dataFromResponse = response.getData();
-		P2PUtil.saveRFCFile(dataFromResponse, fileName);
+		P2PUtil.saveRFCFile(dataFromResponse, rfcNumber);
 		RFCServer.getInstance().addOwnRFC(rfcNumber);
 		socket.close();
 	}
