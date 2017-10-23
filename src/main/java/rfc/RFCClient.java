@@ -58,7 +58,7 @@ public class RFCClient {
 		ResponseMessage response = MessageUtility.extractResponse(fromPeer);
 		String dataFromResponse = response.getData();
 		P2PUtil.saveRFCFile(dataFromResponse, rfcNumber);
-		RFCServer.getInstance().addOwnRFC(rfcNumber);
+		RFCServer.getInstance().addOwnRFC(rfcNumber, 0);
 		socket.close();
 	}
 

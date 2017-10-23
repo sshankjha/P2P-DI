@@ -17,7 +17,7 @@ public class ClientMain {
 			RFCServer rfcServer = RFCServer.getInstance();
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
-			rfcServer.addOwnRFC(1);
+			rfcServer.addOwnRFC(1, 10);
 			// rsClient.pQuery();
 			//getFileFromPeer(1);
 			logger.info("Execution Complete");

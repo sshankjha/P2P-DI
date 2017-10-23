@@ -65,13 +65,14 @@ public class RFCServer {
 		}
 	}
 
-	public void addOwnRFC(int rfcNumber) throws UnknownHostException {
-		RFC newrfc = new RFC(rfcNumber, P2PUtil.getLocalIpAddress());
-		rfcIndex.getOwnRFCList().add(newrfc);
+	public void addOwnRFC(int startingRfcNumber, int count) throws UnknownHostException {
+		for (int i = 0; i < count; i++) {
+			RFC newrfc = new RFC(startingRfcNumber + i, P2PUtil.getLocalIpAddress());
+			rfcIndex.getOwnRFCList().add(newrfc);
+		}
 	}
 
 	public void addPeerRFC(List<RFC> fetchedPeerRFC) {
-		// filter for duplicate entries
 		List<RFC> existingList = rfcIndex.getPeerRFCList();
 		for (RFC peerRFC : fetchedPeerRFC) {
 			if (!existingList.contains(peerRFC)) {
