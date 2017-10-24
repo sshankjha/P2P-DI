@@ -141,6 +141,7 @@ public class RSClient {
 				return peer.getPortNumber();
 			}
 		}
+		System.out.println("Could not find port number for host "+ hostName);
 		return 0;
 	}
 }

@@ -9,19 +9,23 @@ import rfc.RFCServer;
 import util.Peer;
 import util.RFC;
 
-public class ClientMain {
-	final static Logger logger = Logger.getLogger(ClientMain.class);
+public class ClientCentralized {
+	final static Logger logger = Logger.getLogger(ClientCentralized.class);
 
 	public static void main(String[] args) {
 		try {
 			RFCServer rfcServer = RFCServer.getInstance();
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
-			rfcServer.addOwnRFC(1, 10);
-			// rsClient.pQuery();
-			//getFileFromPeer(1);
+			rfcServer.addOwnRFC(8001, 60);
+			/*rsClient.pQuery();
+			long startTime = System.currentTimeMillis();
+			int startRFC = 8000;
+			for (int i = 1; i < 61; i++) {
+				getFileFromPeer(startRFC + i);
+			}
+			System.out.println("Time taken: " + (System.currentTimeMillis() - startTime));*/
 			logger.info("Execution Complete");
-
 		} catch (Exception e) {
 			logger.error(e);
 		}
