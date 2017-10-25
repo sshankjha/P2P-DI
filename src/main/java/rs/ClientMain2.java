@@ -10,15 +10,15 @@ import rfc.RFCServer;
 import util.Peer;
 import util.RFC;
 
-public class ClientMain {
-	final static Logger logger = Logger.getLogger(ClientMain.class);
+public class ClientMain2 {
+	final static Logger logger = Logger.getLogger(ClientMain2.class);
 
 	public static void main(String[] args) {
 		try {
 			RFCServer rfcServer = RFCServer.getInstance();
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
-			rfcServer.addOwnRFC(8001, 10);
+			rfcServer.addOwnRFC(8011, 10);
 			TimeUnit.SECONDS.sleep(2);
 			rsClient.pQuery();
 			long startTime = System.currentTimeMillis();

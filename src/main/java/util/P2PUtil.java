@@ -3,6 +3,7 @@ package util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.UnknownHostException;
@@ -67,9 +68,11 @@ public class P2PUtil {
 			while ((sCurrentLine = br.readLine()) != null) {
 				data.append(sCurrentLine + Constants.CR_LF);
 			}
-			System.out.println(Base64.getEncoder().encode(data.toString().getBytes()));
+			//System.out.println(Base64.getEncoder().encode(data.toString().getBytes()));
 			toServer.write(Base64.getEncoder().encode(data.toString().getBytes()));
 		} catch (Exception e) {
+			logger.warn("FilePath: "
+					+ new File(Constants.RFC_PATH + getFileNameFromRFCNumber(rfcNumber)).getAbsolutePath());
 			logger.error(e);
 		}
 	}

@@ -37,9 +37,9 @@ public class RFCClient {
 		List<RFC> rfcListFromPeer = new ArrayList<RFC>();
 		String data = response.getData();
 		String[] values = data.split(Constants.SEPARATOR);
-		for (int iter = 0; iter < values.length; iter += 2) {
+		for (int iter = 0; iter < values.length; iter += 3) {
 			if (values[iter + 1] != P2PUtil.getLocalIpAddress()) {
-				rfcListFromPeer.add(new RFC(Integer.parseInt(values[iter]), values[iter + 1]));
+				rfcListFromPeer.add(new RFC(Integer.parseInt(values[iter]), values[iter + 1], Integer.parseInt(values[iter + 2])));
 			}
 		}
 		RFCServer.getInstance().addPeerRFC(rfcListFromPeer);
@@ -58,7 +58,7 @@ public class RFCClient {
 		ResponseMessage response = MessageUtility.extractResponse(fromPeer);
 		String dataFromResponse = response.getData();
 		P2PUtil.saveRFCFile(dataFromResponse, rfcNumber);
-		RFCServer.getInstance().addOwnRFC(rfcNumber, 0);
+		RFCServer.getInstance().addOwnRFC(rfcNumber, 1);
 		socket.close();
 	}
 

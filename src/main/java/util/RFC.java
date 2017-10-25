@@ -6,6 +6,8 @@ public class RFC {
 
 	int RFCNumber;
 	String host;
+	int port;
+
 	int TTL = 7200;
 
 	public int getRFCNumber() {
@@ -32,10 +34,19 @@ public class RFC {
 		super();
 	}
 
-	public RFC(int rfcNumber, String host) {
+	public RFC(int rfcNumber, String host, int port) {
 		super();
 		this.RFCNumber = rfcNumber;
 		this.host = host;
+		this.port = port;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 	@Override

@@ -134,13 +134,4 @@ public class RSClient {
 			e.printStackTrace();
 		}
 	}
-
-	public static int getPortForHost(String hostName) {
-		for (Peer peer : peerList) {
-			if (peer.getHostname().equalsIgnoreCase(hostName)) {
-				return peer.getPortNumber();
-			}
-		}
-		return 0;
-	}
 }

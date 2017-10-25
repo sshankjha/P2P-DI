@@ -56,7 +56,7 @@ public class RFCServerThread implements Runnable {
 		toPeer.writeBytes(sentence);
 		// Write data
 		for (RFC rfc : RFCServer.getInstance().getCombinedRFCList()) {
-			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR + rfc.getHost() + Constants.SEPARATOR);
+			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR + rfc.getHost() + Constants.SEPARATOR + rfc.getPort() + Constants.SEPARATOR);
 		}
 		toPeer.writeBytes(Constants.CR_LF);
 		toPeer.writeBytes(Constants.CR_LF);
