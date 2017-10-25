@@ -12,7 +12,5 @@ public class ServerMain {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		logger.info("Starting RS Server");
 		RSServer.getInstance().listen();
-		Thread.sleep(40 * 1000);
-		//System.exit(0);
 	}
 }
