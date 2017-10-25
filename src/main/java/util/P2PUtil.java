@@ -5,10 +5,16 @@ import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Base64;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import rfc.RFCClient;
+import rfc.RFCServer;
+import rs.RSClient;
 
 public class P2PUtil {
 
@@ -78,6 +84,40 @@ public class P2PUtil {
 		try (BufferedWriter bw = new BufferedWriter(
 				new FileWriter(Constants.RFC_PATH + getFileNameFromRFCNumber(rfcNumber)))) {
 			bw.write(new String(Base64.getDecoder().decode(fomrServer)));
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+
+	public static void getFileFromPeer(int RFCNumber) throws UnknownHostException, IOException {
+		RSClient rsClient = new RSClient();
+		rsClient.pQuery();
+		RFCClient rfcClient = new RFCClient();
+		List<RFC> ownRFCList = RFCServer.getRfcIndex().getOwnRFCList();
+		for (RFC ownRFC : ownRFCList) {
+			if (RFCNumber == ownRFC.getRFCNumber()) {
+				logger.info("RFC already present in same client");
+				return;
+			}
+		}
+		try {
+			List<Peer> peers = RSClient.peerList;
+			for (Peer peer : peers) {
+				rfcClient.rfcQuery(peer.getHostname(), peer.getPortNumber());
+				logger.debug("RfcQuery done for peer " + peer.getHostname() + ":" + peer.getPortNumber());
+				List<RFC> peerRFCList = RFCServer.getRfcIndex().getPeerRFCList();
+				for (RFC peerRFC : peerRFCList) {
+					if (RFCNumber == peerRFC.getRFCNumber()) {
+						logger.debug("FileName " + peerRFC.getTitle() + " found at " + peerRFC.getHost());
+						// change rfc number
+						boolean downloadSuccessful = rfcClient.getRfc(peerRFC.getHost(),
+								RSClient.getPortForHost(peerRFC.getHost()), RFCNumber);
+						if (downloadSuccessful) {
+							return;
+						}
+					}
+				}
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		}

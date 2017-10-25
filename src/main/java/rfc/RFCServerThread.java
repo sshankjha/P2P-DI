@@ -29,7 +29,7 @@ public class RFCServerThread implements Runnable {
 	}
 
 	public void run() {
-		logger.info("New RFCServer Thread Started");
+		logger.debug("New RFCServer Thread Started");
 		try {
 			processRequest();
 		} catch (IOException e) {
@@ -45,7 +45,7 @@ public class RFCServerThread implements Runnable {
 			int rfcNumber = Integer.parseInt(message.getHeaders().get(Constants.HEADER_RFCNUMBER));
 			processGetRfc(rfcNumber);
 		} else {
-			logger.info("Error processing request");
+			logger.error("Error processing request");
 		}
 	}
 
@@ -56,7 +56,7 @@ public class RFCServerThread implements Runnable {
 		toPeer.writeBytes(sentence);
 		// Write data
 		for (RFC rfc : RFCServer.getInstance().getCombinedRFCList()) {
-			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR + rfc.getHost() + Constants.SEPARATOR);
+			toPeer.writeBytes(rfc.getRFCNumber() + Constants.SEPARATOR + rfc.getHost() + Constants.SEPARATOR + rfc.getPort() + Constants.SEPARATOR);
 		}
 		toPeer.writeBytes(Constants.CR_LF);
 		toPeer.writeBytes(Constants.CR_LF);

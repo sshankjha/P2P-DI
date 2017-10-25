@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import rfc.RFCServer;
 import util.Constants;
 import util.Message;
 import util.MessageUtility;
@@ -20,8 +21,8 @@ import util.ResponseMessage;
 
 public class RSClient {
 	final static Logger logger = Logger.getLogger(RSClient.class);
-	public int cookie;
-	int rfcServerPortNumber;
+	private int cookie;
+	private int rfcServerPortNumber;
 
 	public static List<Peer> peerList = new ArrayList<Peer>();
 
@@ -46,10 +47,11 @@ public class RSClient {
 		}
 	}
 
-	public RSClient(int rfcServerPortNumber) throws UnknownHostException, IOException {
+	public RSClient() throws UnknownHostException, IOException {
 		// Read cookie from a file else set to a default value of 0
+		RFCServer rfcServer = RFCServer.getInstance();
 		cookie = P2PUtil.getCookieFromFile();
-		this.rfcServerPortNumber = rfcServerPortNumber;
+		this.rfcServerPortNumber = rfcServer.getListneningSocket();
 
 	}
 
@@ -85,12 +87,10 @@ public class RSClient {
 			ResponseMessage response = MessageUtility.extractResponse(fromServer);
 			if (response.getStatus().equals(String.valueOf(Constants.STATUS_OK))) {
 				updatePeerList(response);
-				// List<Peer> peerlist =
-				// P2PUtil.deserialzePeerList(response.getData());
 				cookie = Integer.parseInt(response.getHeader(Constants.HEADER_COOKIE));
-				setCookie();
 			} else {
-				logger.info("No active peers present");
+				peerList.clear();
+				logger.debug("No active peers present");
 			}
 			socket.close();
 		} catch (Exception e) {
@@ -143,4 +143,5 @@ public class RSClient {
 		}
 		return 0;
 	}
+
 }

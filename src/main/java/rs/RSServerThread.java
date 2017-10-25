@@ -28,7 +28,7 @@ public class RSServerThread implements Runnable {
 	}
 
 	public void run() {
-		logger.info("New Server Thread Started");
+		logger.debug("New Server Thread Started");
 		try {
 			processRequest();
 		} catch (IOException e) {
@@ -85,12 +85,12 @@ public class RSServerThread implements Runnable {
 	private void processPQuery(RequestMessage message) throws IOException {
 		int requestCookie = Integer.parseInt(message.getHeader(Constants.HEADER_COOKIE));
 		String sentence = "";
-		if (isActivePeerPresent()) {
+		if (isActivePeerPresent(requestCookie)) {
 			sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_OK + Constants.CR_LF;
 			sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
 			sentence += Constants.CR_LF;
 			// Sending PeerList
-			sentence += sendPeerList();
+			sentence += sendPeerList(requestCookie);
 		} else {
 			sentence = Constants.PROTOCOL_VERSION + " " + Constants.STATUS_ERROR + Constants.CR_LF;
 			sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
@@ -101,13 +101,10 @@ public class RSServerThread implements Runnable {
 		connectionSocket.close();
 	}
 
-	private boolean isActivePeerPresent() throws IOException {
-		String requestingPeerIP = connectionSocket.getInetAddress().toString().replaceAll("/", "");
-		int requestingPeerPort = connectionSocket.getPort();
+	private boolean isActivePeerPresent(int requestCookie) throws IOException {
 		synchronized (RSServer.getInstance().getPeerList()) {
 			for (Peer peer : RSServer.getInstance().getPeerList()) {
-				if (!(peer.getHostname().equals(requestingPeerIP) && peer.getPortNumber() == requestingPeerPort)
-						&& peer.isActive()) {
+				if (!(peer.getCookie() == requestCookie) && peer.isActive()) {
 					return true;
 				}
 			}
@@ -122,7 +119,7 @@ public class RSServerThread implements Runnable {
 		// Assign a new cookie number if request cookie = 0
 		Peer peer = new Peer();
 		peer.setCookie(requestCookie);
-		peer.setHostname(connectionSocket.getInetAddress().toString());
+		peer.setHostname(connectionSocket.getInetAddress().toString().replaceAll("/", ""));
 		RSServer.getInstance().removePeer(peer);
 		sentence += Constants.HEADER_COOKIE + " " + requestCookie + Constants.CR_LF;
 		sentence += Constants.CR_LF;
@@ -160,14 +157,11 @@ public class RSServerThread implements Runnable {
 		}
 	}
 
-	private String sendPeerList() throws IOException {
+	private String sendPeerList(int requestCookie) throws IOException {
 		String statement = "";
-		String requestingPeerIP = connectionSocket.getInetAddress().toString().replaceAll("/", "");
-		int requestingPeerPort = connectionSocket.getPort();
 		synchronized (RSServer.getInstance().getPeerList()) {
 			for (Peer peer : RSServer.getInstance().getPeerList()) {
-				if (!(peer.getHostname().equals(requestingPeerIP) && peer.getPortNumber() == requestingPeerPort)
-						&& peer.isActive()) {
+				if (!(peer.getCookie() == requestCookie) && peer.isActive()) {
 					statement += peer.getHostname() + Constants.SEPARATOR + peer.getPortNumber() + Constants.SEPARATOR
 							+ peer.getCookie() + Constants.SEPARATOR;
 				}

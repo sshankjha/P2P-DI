@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import rs.RSServerThread;
 import util.Constants;
 import util.P2PUtil;
 import util.RFC;
@@ -57,7 +56,7 @@ public class RFCServer {
 	}
 
 	public static void listen(ServerSocket welcomeSocket) throws IOException {
-		logger.info("Inside RFCServer.listen()");
+		logger.debug("Inside RFCServer.listen()");
 		while (true) {
 			Socket connectionSocket = welcomeSocket.accept();
 			Thread t = new Thread(new RFCServerThread(connectionSocket));
@@ -67,9 +66,14 @@ public class RFCServer {
 
 	public void addOwnRFC(int startingRfcNumber, int count) throws UnknownHostException {
 		for (int i = 0; i < count; i++) {
-			RFC newrfc = new RFC(startingRfcNumber + i, P2PUtil.getLocalIpAddress());
+			RFC newrfc = new RFC(startingRfcNumber + i, P2PUtil.getLocalIpAddress(), getListneningSocket());
 			rfcIndex.getOwnRFCList().add(newrfc);
 		}
+	}
+
+	public void addSingleOwnRFC(int rfcNumber) throws UnknownHostException {
+		RFC newrfc = new RFC(rfcNumber, P2PUtil.getLocalIpAddress(), getListneningSocket());
+		rfcIndex.getOwnRFCList().add(newrfc);
 	}
 
 	public void addPeerRFC(List<RFC> fetchedPeerRFC) {
