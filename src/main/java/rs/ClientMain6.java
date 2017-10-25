@@ -22,7 +22,7 @@ public class ClientMain6 {
 			TimeUnit.SECONDS.sleep(2);
 			rsClient.pQuery();
 			long startTime = System.currentTimeMillis();
-			for (int i = 8001; i < 8061; i++) {
+			for (int i = 8001; i < 8051; i++) {
 				getFileFromPeer(i);
 			}
 			logger.warn("Time taken: " + (System.currentTimeMillis() - startTime) + " ms");
