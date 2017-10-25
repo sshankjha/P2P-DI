@@ -18,11 +18,9 @@ public class ClientMain6 {
 			RFCServer rfcServer = RFCServer.getInstance();
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
-			rfcServer.addOwnRFC(8051, 10);
-			TimeUnit.SECONDS.sleep(2);
 			rsClient.pQuery();
 			long startTime = System.currentTimeMillis();
-			for (int i = 8001; i < 8051; i++) {
+			for (int i = 8001; i < 8061; i++) {
 				getFileFromPeer(i);
 			}
 			logger.warn("Time taken: " + (System.currentTimeMillis() - startTime) + " ms");
