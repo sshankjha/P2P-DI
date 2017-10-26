@@ -26,5 +26,7 @@ public final class Constants {
 	public static final String RFC_PATH = "rfc" + File.separator;
 	public static final String RFC_FILE_EXTENSION = ".txt";
 	public static final String RFC_FILE_PREFIX = "rfc";
+	public static final int RFC_PORT_START = 65400;
+	public static final int RFC_PORT_RANGE = 100;
 
 }

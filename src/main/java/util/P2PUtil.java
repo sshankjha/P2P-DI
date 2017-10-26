@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -121,5 +122,11 @@ public class P2PUtil {
 		} catch (Exception e) {
 			logger.error(e);
 		}
+	}
+
+	public static int getPortNumberInVCLRange() {
+		Random rand = new Random();
+		int value = rand.nextInt(Constants.RFC_PORT_RANGE + 1);
+		return Constants.RFC_PORT_START + value;
 	}
 }

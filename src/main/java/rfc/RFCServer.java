@@ -52,7 +52,17 @@ public class RFCServer {
 
 	private RFCServer() throws IOException {
 		super();
-		welcomeSocket = new ServerSocket(0);
+		try {
+			welcomeSocket = new ServerSocket(P2PUtil.getPortNumberInVCLRange());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			try {
+				welcomeSocket = new ServerSocket(P2PUtil.getPortNumberInVCLRange());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				welcomeSocket = new ServerSocket(P2PUtil.getPortNumberInVCLRange());
+			}
+		}
 	}
 
 	public static void listen(ServerSocket welcomeSocket) throws IOException {
