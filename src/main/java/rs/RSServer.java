@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -32,6 +33,11 @@ public class RSServer {
 		super();
 		peerList = Collections.synchronizedList(new ArrayList<Peer>());
 		welcomeSocket = new ServerSocket(Constants.RS_PORT);
+		Timer time = new Timer();
+		// Instantiate SheduledTask class
+		RSTTLScheduledTask st = new RSTTLScheduledTask();
+		// Create Repetitively task for every 60 secs
+		time.schedule(st, 0, 60 * 1000);
 	}
 
 	public void listen() throws IOException {

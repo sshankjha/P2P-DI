@@ -15,6 +15,7 @@ public class Peer implements Serializable {
 	private Boolean status = true;
 	private int TTL = 7200;
 	private Date lastRegistrationTime = new Date();
+	private int activityCount = 1;
 
 	public Peer() {
 		super();
@@ -72,6 +73,7 @@ public class Peer implements Serializable {
 	}
 
 	public void setLastRegistrationTime(Date lastRegistrationTime) {
+		activityCount++;
 		this.lastRegistrationTime = lastRegistrationTime;
 	}
 
@@ -89,6 +91,14 @@ public class Peer implements Serializable {
 		}
 		Peer peer = (Peer) otherObject;
 		return cookie == peer.cookie && Objects.equals(hostname, peer.hostname);
+	}
+
+	public int getActivityCount() {
+		return activityCount;
+	}
+
+	public void setActivityCount(int activityCount) {
+		this.activityCount = activityCount;
 	}
 
 }
