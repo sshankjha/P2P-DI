@@ -21,12 +21,13 @@ public class ClientMain {
 			rfcServer.addOwnRFC(8001, 10);
 			TimeUnit.SECONDS.sleep(2);
 			rsClient.pQuery();
+			String totalTime = "";
 			long startTime = System.currentTimeMillis();
 			for (int i = 8001; i < 8061; i++) {
 				getFileFromPeer(i);
+				totalTime += (System.currentTimeMillis() - startTime) + ",";
 			}
-			logger.warn("Time taken: " + (System.currentTimeMillis() - startTime) + " ms");
-			System.out.println("Time taken: " + (System.currentTimeMillis() - startTime) + " ms");
+			System.out.println("Time taken for client1: " + totalTime);
 
 		} catch (Exception e) {
 			logger.error(e);
