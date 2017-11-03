@@ -1,7 +1,6 @@
 package rs;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -19,13 +18,13 @@ public class ClientMain3 {
 			RSClient rsClient = new RSClient(rfcServer.getListneningSocket());
 			rsClient.register();
 			rsClient.pQuery();
+			String timeTaken = "";
 			long startTime = System.currentTimeMillis();
 			for (int i = 8001; i < 8061; i++) {
 				getFileFromPeer(i);
+				timeTaken += (System.currentTimeMillis() - startTime) +",";
 			}
-			logger.warn("Time taken: " + (System.currentTimeMillis() - startTime) + " ms");
-			System.out.println("Time taken: " + (System.currentTimeMillis() - startTime) + " ms");
-
+			System.out.println("Time taken: " + timeTaken);
 		} catch (Exception e) {
 			logger.error(e);
 		}
