@@ -6,7 +6,7 @@ public final class Constants {
 
 	public static final int RS_PORT = 65432;// RS Server Port
 	// RS Server IP
-	public static final String RS_IP = NetworkUtils.getLocalAddress();
+	public static final String RS_IP = "165.227.182.74";
 	public static final String COOKIE = "cookie";
 	public static final String PROTOCOL_VERSION = "P2P-DI/1.0";
 	public static final String CR_LF = "\r\n";

@@ -74,7 +74,7 @@ public class P2PUtil {
 			while ((sCurrentLine = br.readLine()) != null) {
 				data.append(sCurrentLine + Constants.CR_LF);
 			}
-			System.out.println(Base64.getEncoder().encode(data.toString().getBytes()));
+			//System.out.println(Base64.getEncoder().encode(data.toString().getBytes()));
 			toServer.write(Base64.getEncoder().encode(data.toString().getBytes()));
 		} catch (Exception e) {
 			logger.error(e);

@@ -1,7 +1,11 @@
 package util;
 
 import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 public class NetworkUtils {
 
@@ -15,7 +19,24 @@ public class NetworkUtils {
 	public static synchronized NetworkUtils getInstance() throws UnknownHostException {
 		if (instance == null) {
 			instance = new NetworkUtils();
-			instance.hostname = Inet4Address.getLocalHost().getHostAddress();
+			try {
+				String interfaceName = "eth0";
+				NetworkInterface networkInterface;
+				networkInterface = NetworkInterface.getByName(interfaceName);
+				Enumeration<InetAddress> inetAddress = networkInterface.getInetAddresses();
+				InetAddress currentAddress;
+				currentAddress = inetAddress.nextElement();
+				while (inetAddress.hasMoreElements()) {
+					currentAddress = inetAddress.nextElement();
+					if (currentAddress instanceof Inet4Address && !currentAddress.isLoopbackAddress()) {
+						instance.hostname = currentAddress.toString().replaceAll("/", "");
+					}
+				}
+			} catch (SocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 		return instance;
 	}

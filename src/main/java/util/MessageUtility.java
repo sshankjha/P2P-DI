@@ -61,7 +61,7 @@ public class MessageUtility {
 			logger.error(e);
 			request = null;
 		}
-		logger.info(request);
+		//logger.info(request);
 		return request;
 	}
 
@@ -77,7 +77,7 @@ public class MessageUtility {
 			response = null;
 			e.printStackTrace();
 		}
-		logger.info(response);
+		//logger.info(response);
 		return response;
 	}
 
